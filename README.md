@@ -2,9 +2,13 @@
 
 Train Ticket Auto Query Python Scripts
 
+# HOW to use it:
+# run the command: "python auto_query.py http://your-train-ticket-url.com 10000"
+
+
 ## How to use
 
-```python
+<!-- ```python
 import logging
 from queries import Query
 from scenarios import query_and_preserve
@@ -19,4 +23,4 @@ query_and_preserve(q)
 
 # or execute query directly
 q.query_high_speed_ticket()
-```
+``` -->
