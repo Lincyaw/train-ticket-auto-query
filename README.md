@@ -6,7 +6,7 @@ Train Ticket Auto Query Python Scripts
 # run the command: "python auto_query.py http://your-train-ticket-url.com 10000"
 
 
-## How to use
+<!-- ## How to use -->
 
 <!-- ```python
 import logging
