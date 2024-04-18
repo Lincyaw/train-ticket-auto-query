@@ -157,37 +157,85 @@ class Query:
     
         return trip_ids
 
-    def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
-        url = f"{self.address}/api/v1/travel2service/trips/left"
-        place_pairs = [("Shang Hai", "Nan Jing"),
-                       ("Nan Jing", "Shang Hai")]
+    # def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
+    #     url = f"{self.address}/api/v1/travel2service/trips/left"
+    #     place_pairs = [("Shang Hai", "Nan Jing"),
+    #                    ("Nan Jing", "Shang Hai")]
 
-        if place_pair == ():
-            place_pair = random.choice(place_pairs)
+    #     if place_pair == ():
+    #         place_pair = random.choice(place_pairs)
 
-        if time == "":
-            time = datestr
+    #     if time == "":
+    #         time = datestr
 
+    #     payload = {
+    #         "departureTime": time,
+    #         "startingPlace": place_pair[0],
+    #         "endPlace": place_pair[1],
+    #     }
+
+    #     response = self.session.post(url=url, headers=headers, json=payload)
+
+    #     if response.status_code != 200 or response.json().get("data") is None:
+    #         logger.warning(
+    #             f"request for {url} failed. response data is {response.text}")
+    #         return None
+
+    #     data = response.json().get("data")  # type: dict
+
+    #     trip_ids = []
+    #     for d in data:
+    #         trip_id = d.get("tripId").get("type") + \
+    #             d.get("tripId").get("number")
+    #         trip_ids.append(trip_id)
+    #     return trip_ids
+    def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> list:
+        """
+        Returns a list of TripIds for normal tickets
+        :param place_pair: Tuple of start and end places
+        :param time: Departure time
+        :param headers: Request headers
+        :return: List of TripIds
+        """
+    
+        url = f"{self.address}/api/v1/travelservice/trips/left"
+        
+        if not place_pair:
+            place_pair = random.choice([("CityA", "CityB"), ("CityB", "CityA")])  # Example place pairs
+    
+        if not time:
+            time = "some_default_time"  # Ensure you define or appropriately handle the time
+    
         payload = {
             "departureTime": time,
             "startingPlace": place_pair[0],
             "endPlace": place_pair[1],
         }
-
+    
         response = self.session.post(url=url, headers=headers, json=payload)
-
-        if response.status_code != 200 or response.json().get("data") is None:
-            logger.warning(
-                f"request for {url} failed. response data is {response.text}")
+    
+        if response.status_code != 200:
+            logger.warning(f"request for {url} failed with status code {response.status_code}. response data is {response.text}")
             return None
-
-        data = response.json().get("data")  # type: dict
-
+    
+        try:
+            data = response.json()
+        except ValueError:
+            logger.error("Invalid JSON response")
+            return None
+    
+        if not isinstance(data, dict) or 'data' not in data:
+            logger.warning(f"Unexpected data format or 'data' key not found in response: {data}")
+            return None
+    
         trip_ids = []
-        for d in data:
-            trip_id = d.get("tripId").get("type") + \
-                d.get("tripId").get("number")
-            trip_ids.append(trip_id)
+        trip_data = data['data']  # Assuming 'data' is a list of dictionaries containing trip details
+        for d in trip_data:
+            trip_type = d.get("tripId", {}).get("type", "")
+            trip_number = d.get("tripId", {}).get("number", "")
+            if trip_type and trip_number:
+                trip_ids.append(trip_type + trip_number)
+        
         return trip_ids
 
     def query_high_speed_ticket_parallel(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
