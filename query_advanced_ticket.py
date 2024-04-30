@@ -11,7 +11,8 @@ date = time.strftime("%Y-%m-%d", time.localtime())
 
 # base_address = "http://10.176.122.1:32677"
 # base_address = "http://10.107.91.15:30729"
-base_address = "http://10.10.10.201:32075"
+# base_address = "http://10.10.10.201:32075"
+base_address = "http://10.106.225.127:32075"
 
 
 

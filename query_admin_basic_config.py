@@ -10,7 +10,8 @@ date = time.strftime("%Y-%m-%d", time.localtime())
 
 # base_address = "http://139.196.152.44:31000"
 # base_address = "http://10.107.91.15:30729"
-base_address = "http://10.10.10.201:32075"
+# base_address = "http://10.10.10.201:32075"
+base_address = "http://10.106.225.127:32075"
 
 
 def query_admin_basic_config(headers):
