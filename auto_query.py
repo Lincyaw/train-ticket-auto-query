@@ -10,7 +10,7 @@ from scenarios import query_and_preserve
 from scenarios import query_and_cancel
 from scenarios import query_and_collect
 from scenarios import query_and_execute
-from scenarios import query_and_consign
+# from scenarios import query_and_consign
 from scenarios import query_and_pay
 from scenarios import query_and_rebook
 from scenarios import query_and_rebook
@@ -29,8 +29,8 @@ from scenarios import query_and_rebook
 # from query_food import query_food
 # # from query_order_and_pay import query_order_and_pay
 # from query_route import query_route
-# from query_travel_left_parallel import query_travel_left_parallel
-# from query_travel_left import query_travel_left
+from query_travel_left_parallel import query_travel_left_parallel
+from query_travel_left import query_travel_left
 
 # Import more functions as needed
 
@@ -40,9 +40,9 @@ function_list = [
     query_and_cancel,
     query_and_collect,
     query_and_execute,
-    # query_and_consign,
+    query_and_consign,
     query_and_pay,
-    query_and_rebook
+    query_and_rebook,
     # query_and_collect_ticket,
     # query_travel_left,
     # query_admin_basic_config,
@@ -56,8 +56,8 @@ function_list = [
     # query_food,
     # query_order_and_pay,
     # query_route,
-    # query_travel_left_parallel,
-    # query_travel_left
+    query_travel_left_parallel,
+    query_travel_left
 ]
 
 # Create a defaultdict to store the counts of each function
