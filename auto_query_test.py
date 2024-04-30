@@ -7,7 +7,7 @@ from scenarios import query_and_preserve
 if len(sys.argv) < 2:
     # logging.fatal('No URL provided. Usage: python3 auto_query_test.py http://10.10.10.201:31966')
     # logging.fatal('No URL provided. Usage: python3 auto_query_test.py http://10.107.91.15:30729')
-    logging.fatal('No URL provided. Usage: python3 auto_query_test.py http://10.10.10.201:30729')
+    logging.fatal('No URL provided. Usage: python3 auto_query_test.py http://10.10.10.201:32075')
     sys.exit(1)  # Exit the script with an error code
 
 # First command line argument is the URL
