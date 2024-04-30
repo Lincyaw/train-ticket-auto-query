@@ -40,7 +40,7 @@ function_list = [
     query_and_cancel,
     query_and_collect,
     query_and_execute,
-    # query_and_consign,
+    query_and_consign,
     query_and_pay,
     query_and_rebook,
     # query_and_collect_ticket,
@@ -73,8 +73,10 @@ def main(url, n_times):
     for i in range(n_times):
         # Randomly select a function to execute
         random_function = random.choice(function_list)
+
         #test
-        print(random_function)
+        # print(random_function)
+
         # Execute the selected function
         random_function(q)
 
