@@ -56,8 +56,8 @@ function_list = [
     # query_food,
     # query_order_and_pay,
     # query_route,
-    query_travel_left_parallel,
-    query_travel_left
+    # query_travel_left_parallel,
+    # query_travel_left
 ]
 
 # Create a defaultdict to store the counts of each function
