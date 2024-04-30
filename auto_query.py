@@ -3,6 +3,7 @@
 
 import sys
 import random
+from collections import defaultdict
 from queries import Query
 # Import necessary functions from the modules
 from scenarios import query_and_preserve
@@ -60,6 +61,9 @@ function_list = [
     # query_travel_left
 ]
 
+# Create a defaultdict to store the counts of each function
+function_counts = defaultdict(int)
+
 def main(url, n_times):
     q = Query(url)
     
@@ -72,7 +76,18 @@ def main(url, n_times):
         random_function = random.choice(function_list)
         # Execute the selected function
         random_function(q)
+
+        # Increment the count for the executed function
+        function_counts[random_function.__name__] += 1
+
         print(f"Execution {i+1}/{n_times} of {random_function.__name__} completed.")
+
+
+    # Print the counts of each function
+    print("\nFunction counts:")
+    for function_name, count in function_counts.items():
+        print(f"{function_name}: {count}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
