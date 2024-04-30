@@ -10,7 +10,7 @@ from scenarios import query_and_preserve
 from scenarios import query_and_cancel
 from scenarios import query_and_collect
 from scenarios import query_and_execute
-# from scenarios import query_and_consign
+from scenarios import query_and_consign
 from scenarios import query_and_pay
 from scenarios import query_and_rebook
 from scenarios import query_and_rebook
