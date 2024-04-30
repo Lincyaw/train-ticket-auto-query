@@ -73,6 +73,8 @@ def main(url, n_times):
     for i in range(n_times):
         # Randomly select a function to execute
         random_function = random.choice(function_list)
+        #test
+        print(random_function)
         # Execute the selected function
         random_function(q)
 
