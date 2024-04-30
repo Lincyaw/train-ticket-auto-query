@@ -16,21 +16,21 @@ from scenarios import query_and_rebook
 from scenarios import query_and_rebook
 # from query_and_collect_ticket import query_and_collect_ticket
 # from query_travel_left import query_travel_left
-from query_admin_basic_config import query_admin_basic_config
-from query_admin_basic_price import query_admin_basic_price
-from query_advanced_ticket import query_advanced_ticket
+# from query_admin_basic_config import query_admin_basic_config
+# from query_admin_basic_price import query_admin_basic_price
 # from query_advanced_ticket import query_advanced_ticket
-# from query_and_cancel import query_and_cancel
-# from query_and_collect_ticket import query_and_collect_ticket
-# from query_and_enter_station import query_and_enter_station
-# from query_and_preserve import query_and_preserve
-# from query_and_put_consign import query_and_put_consign
-from query_and_rebook import query_and_rebook
-from query_food import query_food
-# from query_order_and_pay import query_order_and_pay
-from query_route import query_route
-from query_travel_left_parallel import query_travel_left_parallel
-from query_travel_left import query_travel_left
+# # from query_advanced_ticket import query_advanced_ticket
+# # from query_and_cancel import query_and_cancel
+# # from query_and_collect_ticket import query_and_collect_ticket
+# # from query_and_enter_station import query_and_enter_station
+# # from query_and_preserve import query_and_preserve
+# # from query_and_put_consign import query_and_put_consign
+# from query_and_rebook import query_and_rebook
+# from query_food import query_food
+# # from query_order_and_pay import query_order_and_pay
+# from query_route import query_route
+# from query_travel_left_parallel import query_travel_left_parallel
+# from query_travel_left import query_travel_left
 
 # Import more functions as needed
 
@@ -42,23 +42,22 @@ function_list = [
     query_and_execute,
     query_and_consign,
     query_and_pay,
-    query_and_rebook,
-    query_and_rebook,
+    query_and_rebook
     # query_and_collect_ticket,
     # query_travel_left,
-    query_admin_basic_config,
-    query_admin_basic_price,
-    query_advanced_ticket,
+    # query_admin_basic_config,
+    # query_admin_basic_price,
+    # query_advanced_ticket,
     # query_and_cancel,
     # query_and_collect_ticket,
     # query_and_enter_station,
     # query_and_put_consign,
-    query_and_rebook,
-    query_food,
+    # query_and_rebook,
+    # query_food,
     # query_order_and_pay,
-    query_route,
-    query_travel_left_parallel,
-    query_travel_left
+    # query_route,
+    # query_travel_left_parallel,
+    # query_travel_left
 ]
 
 # Create a defaultdict to store the counts of each function
