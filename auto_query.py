@@ -1,6 +1,7 @@
     # HOW to use it:
     #run the command: "python auto_query.py http://your-train-ticket-url.com 10000"
 
+import time
 import sys
 import random
 from collections import defaultdict
@@ -81,6 +82,8 @@ def main(url, n_times):
 
         # Execute the selected function
         random_function(q)
+
+        time.sleep(5)
 
         # Increment the count for the executed function
         function_counts[random_function.__name__] += 1
