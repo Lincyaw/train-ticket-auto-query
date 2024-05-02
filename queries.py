@@ -467,8 +467,10 @@ class Query:
             "id": "",
             "isWithin": False
         }
+        print("put_consign_testpoint 3")
         res = self.session.put(url=url, headers=headers,
                                json=consignload)
+        print("put_consign_testpoint 4")
 
         order_id = result["orderId"]
         if res.status_code == 200 or res.status_code == 201:
@@ -479,6 +481,8 @@ class Query:
             return None
 
         return order_id
+
+    print("put_consign_testpoint 6")
 
     def query_route(self, routeId: str = '', headers: dict = {}):
         if routeId == '':
