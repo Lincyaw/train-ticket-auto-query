@@ -104,6 +104,7 @@ def query_and_consign(q: Query):
 
     # (orderId, tripId)
     res = random_from_list(list)
+    print("test point 7.25")
     order_id = q.put_consign(res)
 
     print("test point 7.5")
