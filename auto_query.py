@@ -83,7 +83,7 @@ def main(url, n_times):
         # Execute the selected function
         random_function(q)
 
-        time.sleep(5)
+        # time.sleep(5)
 
         # Increment the count for the executed function
         function_counts[random_function.__name__] += 1
