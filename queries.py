@@ -480,9 +480,9 @@ class Query:
                 f"order {order_id} failed, code: {res.status_code}, text: {res.text}")
             return None
 
+        print("put_consign_testpoint 6")
         return order_id
 
-    print("put_consign_testpoint 6")
 
     def query_route(self, routeId: str = '', headers: dict = {}):
         if routeId == '':

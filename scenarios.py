@@ -114,6 +114,7 @@ def query_and_consign(q: Query):
 
     print("test point 8")
     logger.info(f"{order_id} queried and put consign")
+    print("test point completed")
 
 
 def query_and_pay(q: Query):
