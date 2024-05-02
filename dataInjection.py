@@ -15,7 +15,7 @@ for _ in range(5):
 # Connect to the MySQL database
 # Replace the placeholders with your actual database connection details
 conn = mysql.connector.connect(
-    host='10.10.10.201:32124',
+    host='10.10.10.201:3306',
     user='root',
     password='yourpassword',
     database='AIOps'
