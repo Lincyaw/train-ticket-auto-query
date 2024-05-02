@@ -451,7 +451,9 @@ class Query:
         return list
 
     def put_consign(self, result, headers: dict = {}) -> str:
+        print("put_consign_testpoint 1")
         url = f"{self.address}/api/v1/consignservice/consigns"
+        print("put_consign_testpoint 2")
         consignload = {
             "accountId": result["accountId"],
             "handleDate": time.strftime('%Y-%m-%d', time.localtime(time.time())),
