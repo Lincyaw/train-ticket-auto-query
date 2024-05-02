@@ -86,13 +86,21 @@ def query_and_preserve(q: Query):
 
 
 def query_and_consign(q: Query):
+    print("test point 1")
     if random_from_weighted(highspeed_weights):
+        print("test point 2")
         list = q.query_orders_all_info()
+        print("test point 3")
     else:
+        print("test point 4")
         list = q.query_orders_all_info(query_other=True)
+        print("test point 5")
 
     if not list:
+        print("test point 6")
         return
+    
+    print("test point 7")
 
     # (orderId, tripId)
     res = random_from_list(list)
@@ -101,6 +109,7 @@ def query_and_consign(q: Query):
     if not order_id:
         return
 
+    print("test point 8")
     logger.info(f"{order_id} queried and put consign")
 
 
