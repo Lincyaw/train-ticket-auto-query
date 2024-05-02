@@ -106,6 +106,8 @@ def query_and_consign(q: Query):
     res = random_from_list(list)
     order_id = q.put_consign(res)
 
+    print("test point 7.5")
+
     if not order_id:
         return
 

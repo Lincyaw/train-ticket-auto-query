@@ -15,10 +15,11 @@ for _ in range(5):
 # Connect to the MySQL database
 # Replace the placeholders with your actual database connection details
 conn = mysql.connector.connect(
-    host='10.10.10.201:3306',
+    host='10.10.10.201',
+    port=32124,
     user='root',
     password='yourpassword',
-    database='AIOps'
+    database='ts'
 )
 
 # Create a cursor object to execute SQL queries
