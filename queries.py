@@ -454,6 +454,11 @@ class Query:
         # print("put_consign_testpoint 1")
         url = f"{self.address}/api/v1/consignservice/consigns"
         # print("put_consign_testpoint 2")
+
+        consignee_list = [str(i) for i in range(1, 201)]
+        phone_list = [''.join(random.choices('0123456789', k=11)) for _ in range(100)]
+        weight_list = [str(i) for i in range(1, 51)]
+
         consignload = {
             "accountId": result["accountId"],
             "handleDate": time.strftime('%Y-%m-%d', time.localtime(time.time())),
@@ -461,9 +466,9 @@ class Query:
             "from": result["from"],
             "to": result["to"],
             "orderId": result["orderId"],
-            "consignee": "32",
-            "phone": "12345677654",
-            "weight": "32",
+            "consignee": random.choice(consignee_list),
+            "phone": random.choice(phone_list),
+            "weight": random.choice(weight_list),
             "id": "",
             "isWithin": False
         }
