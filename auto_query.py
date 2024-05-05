@@ -37,7 +37,7 @@ from query_travel_left import query_travel_left
 
 # List of functions to be executed randomly
 function_list = [
-    # query_and_preserve,
+    query_and_preserve,
 
     query_and_cancel,
     query_and_collect,
