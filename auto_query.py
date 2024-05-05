@@ -39,12 +39,12 @@ from query_travel_left import query_travel_left
 function_list = [
     # query_and_preserve,
 
-    # query_and_cancel,
-    # query_and_collect,
-    # query_and_execute,
-    query_and_consign
-    # query_and_pay,
-    # query_and_rebook,
+    query_and_cancel,
+    query_and_collect,
+    query_and_execute,
+    query_and_consign,
+    query_and_pay,
+    query_and_rebook,
 
     # query_and_collect_ticket,
     # query_travel_left,
