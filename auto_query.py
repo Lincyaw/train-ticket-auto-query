@@ -44,10 +44,10 @@ function_list = [
     query_and_execute,
     query_and_consign,
     query_and_pay,
-    query_and_rebook,
+    query_and_rebook
 
     # query_and_collect_ticket,
-    query_travel_left,
+    # query_travel_left,
     # query_admin_basic_config,
     # query_admin_basic_price,
     # query_advanced_ticket,
