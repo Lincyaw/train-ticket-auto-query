@@ -16,7 +16,7 @@ for _ in range(5):
 # Replace the placeholders with your actual database connection details
 conn = mysql.connector.connect(
     host='10.10.10.201',
-    port=32124,
+    port=31485,
     user='root',
     password='yourpassword',
     database='ts'
