@@ -74,9 +74,25 @@ class Query:
         """
 
         url = f"{self.address}/api/v1/travelservice/trips/left"
-        place_pairs = [("Shang Hai", "Su Zhou"),
-                       ("Su Zhou", "Shang Hai"),
-                       ("Nan Jing", "Shang Hai")]
+
+        # 定义20个中国城市简称列表
+        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou", "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
+          "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao", "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
+        
+        # place_pairs = [("Shang Hai", "Su Zhou"),
+        #                ("Su Zhou", "Shang Hai"),
+        #                ("Nan Jing", "Shang Hai")]
+
+        # 定义一个函数,用于生成随机的城市对
+        def generate_random_place_pair():
+            while True:
+                city1 = random.choice(cities)
+                city2 = random.choice(cities)
+                if city1 != city2:
+                    return (city1, city2)
+
+        # 生成随机的城市对列表
+        place_pairs = [generate_random_place_pair() for _ in range(100)]
 
         if place_pair == ():
             place_pair = random.choice(place_pairs)
@@ -159,8 +175,24 @@ class Query:
 
     def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
         url = f"{self.address}/api/v1/travel2service/trips/left"
-        place_pairs = [("Shang Hai", "Nan Jing"),
-                       ("Nan Jing", "Shang Hai")]
+
+        # 定义20个中国城市简称列表
+        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou", "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
+          "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao", "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
+
+        # place_pairs = [("Shang Hai", "Nan Jing"),
+        #                ("Nan Jing", "Shang Hai")]
+
+        # 定义一个函数,用于生成随机的城市对
+        def generate_random_place_pair():
+            while True:
+                city1 = random.choice(cities)
+                city2 = random.choice(cities)
+                if city1 != city2:
+                    return (city1, city2)
+
+        # 生成随机的城市对列表
+        place_pairs = [generate_random_place_pair() for _ in range(20)]
 
         if place_pair == ():
             place_pair = random.choice(place_pairs)
@@ -247,9 +279,28 @@ class Query:
         """
 
         url = f"{self.address}/api/v1/travelservice/trips/left_parallel"
-        place_pairs = [("Shang Hai", "Su Zhou"),
-                       ("Su Zhou", "Shang Hai"),
-                       ("Nan Jing", "Shang Hai")]
+        
+        # place_pairs = [("Shang Hai", "Su Zhou"),
+        #                ("Su Zhou", "Shang Hai"),
+        #                ("Nan Jing", "Shang Hai")]
+
+         # 定义20个中国城市简称列表
+        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou", "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
+          "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao", "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
+
+        # place_pairs = [("Shang Hai", "Nan Jing"),
+        #                ("Nan Jing", "Shang Hai")]
+
+        # 定义一个函数,用于生成随机的城市对
+        def generate_random_place_pair():
+            while True:
+                city1 = random.choice(cities)
+                city2 = random.choice(cities)
+                if city1 != city2:
+                    return (city1, city2)
+
+        # 生成随机的城市对列表
+        place_pairs = [generate_random_place_pair() for _ in range(100)]
 
         if place_pair == ():
             place_pair = random.choice(place_pairs)
@@ -286,9 +337,28 @@ class Query:
         """
 
         url = f"{self.address}/api/v1/travelplanservice/travelPlan/{type}"
-        place_pairs = [("Shang Hai", "Su Zhou"),
-                       ("Su Zhou", "Shang Hai"),
-                       ("Nan Jing", "Shang Hai")]
+
+        # place_pairs = [("Shang Hai", "Su Zhou"),
+        #                ("Su Zhou", "Shang Hai"),
+        #                ("Nan Jing", "Shang Hai")]
+
+         # 定义20个中国城市简称列表
+        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou", "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
+          "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao", "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
+
+        # place_pairs = [("Shang Hai", "Nan Jing"),
+        #                ("Nan Jing", "Shang Hai")]
+
+        # 定义一个函数,用于生成随机的城市对
+        def generate_random_place_pair():
+            while True:
+                city1 = random.choice(cities)
+                city2 = random.choice(cities)
+                if city1 != city2:
+                    return (city1, city2)
+
+        # 生成随机的城市对列表
+        place_pairs = [generate_random_place_pair() for _ in range(40)]
 
         if place_pair == ():
             place_pair = random.choice(place_pairs)
