@@ -113,12 +113,12 @@ class Query:
                 f"request for {url} failed. response data is {response.text}")
             return None
 
-        data = response.json().get("data")  # type: dict
+        data = dict(response.json()).get("data")  # type: dict
 
         trip_ids = []
         for d in data:
-            trip_id = d.get("tripId").get("type") + \
-                d.get("tripId").get("number")
+            trip_id = dict(dict(d).get("tripId")).get("type") + \
+                dict(dict(d).get("tripId")).get("number")
             trip_ids.append(trip_id)
         return trip_ids
     # def query_high_speed_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> list:
@@ -213,12 +213,12 @@ class Query:
                 f"request for {url} failed. response data is {response.text}")
             return None
 
-        data = response.json().get("data")  # type: dict
+        data = dict(response.json()).get("data")  # type: dict
 
         trip_ids = []
         for d in data:
-            trip_id = d.get("tripId").get("type") + \
-                d.get("tripId").get("number")
+            trip_id = dict(dict(d).get("tripId")).get("type") + \
+                dict(dict(d).get("tripId")).get("number")
             trip_ids.append(trip_id)
         return trip_ids
     # def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> list:
@@ -321,12 +321,12 @@ class Query:
                 f"request for {url} failed. response data is {response.text}")
             return None
 
-        data = response.json().get("data")  # type: dict
+        data = dict(response.json()).get("data")  # type: dict
 
         trip_ids = []
         for d in data:
-            trip_id = d.get("tripId").get("type") + \
-                d.get("tripId").get("number")
+            trip_id = dict(dict(d).get("tripId")).get("type") + \
+                dict(dict(d).get("tripId")).get("number")
             trip_ids.append(trip_id)
         return trip_ids
 
@@ -379,11 +379,11 @@ class Query:
                 f"request for {url} failed. response data is {response.text}")
             return None
 
-        data = response.json().get("data")
+        data = dict(response.json()).get("data")
 
         trip_ids = []
         for d in data:
-            trip_id = d.get("tripId")
+            trip_id = dict(d).get("tripId")
             trip_ids.append(trip_id)
         return trip_ids
 
@@ -395,7 +395,7 @@ class Query:
             logger.warning(
                 f"query assurance failed, response data is {response.text}")
             return None
-        _ = response.json().get("data")
+        _ = dict(response.json()).get("data")
         # assurance只有一种
 
         return [{"assurance": "1"}]
@@ -408,7 +408,7 @@ class Query:
             logger.warning(
                 f"query food failed, response data is {response.text}")
             return None
-        _ = response.json().get("data")
+        _ = dict(response.json()).get("data")
 
         # food 是什么不会对后续调用链有影响，因此查询后返回一个固定数值
         return [{
@@ -433,11 +433,11 @@ class Query:
                 f"query contacts failed, response data is {response.text}")
             return None
 
-        data = response.json().get("data")
+        data = dict(response.json()).get("data")
         # print("contacts")
         # pprint(data)
 
-        ids = [d.get("id") for d in data if d.get("id") != None]
+        ids = [dict(d).get("id") for d in data if dict(d).get("id") != None]
         # pprint(ids)
         return ids
 
@@ -464,15 +464,15 @@ class Query:
                 f"query orders failed, response data is {response.text}")
             return None
 
-        data = response.json().get("data")
+        data = dict(response.json()).get("data")
         pairs = []
         for d in data:
             # status = 0: not paid
             # status=1 paid not collect
             # status=2 collected
-            if d.get("status") in types:
-                order_id = d.get("id")
-                trip_id = d.get("trainNumber")
+            if dict(d).get("status") in types:
+                order_id = dict(d).get("id")
+                trip_id = dict(d).get("trainNumber")
                 pairs.append((order_id, trip_id))
 
         logger.info(f"queried {len(pairs)} orders")
@@ -504,16 +504,16 @@ class Query:
                 f"query orders failed, response data is {response.text}")
             return None
 
-        data = response.json().get("data")
+        data = dict(response.json()).get("data")
         list = []
         for d in data:
             result = {}
-            result["accountId"] = d.get("accountId")
+            result["accountId"] = dict(d).get("accountId")
             result["targetDate"] = time.strftime(
                 '%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-            result["orderId"] = d.get("id")
-            result["from"] = d.get("from")
-            result["to"] = d.get("to")
+            result["orderId"] = dict(d).get("id")
+            result["from"] = dict(d).get("from")
+            result["to"] = dict(d).get("to")
             list.append(result)
 
         logger.info(f"queried {len(list)} orders")

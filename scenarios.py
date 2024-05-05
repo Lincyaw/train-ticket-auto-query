@@ -82,6 +82,9 @@ def query_and_preserve(q: Query):
 
     _ = q.query_assurances()
 
+
+    if trip_ids is None:
+        trip_ids = []
     q.preserve(start, end, trip_ids, high_speed)
 
 
