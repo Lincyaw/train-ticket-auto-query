@@ -16,7 +16,8 @@ date = time.strftime("%Y-%m-%d", time.localtime())
 # base_address = "http://10.107.91.15:30729"
 # base_address = "http://10.10.10.201:32075"
 # base_address = "http://10.104.67.224:31475"
-base_address = "http://10.10.10.201:32059"
+base_address = "http://10.97.209.90:31475"
+# base_address = "http://10.10.10.201:32059"
 
 
 def query_food(headers):
