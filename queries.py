@@ -50,9 +50,9 @@ class Query:
                               data=data, verify=False)
 
         if r.status_code == 200:
-            data = r.json().get("data")
-            self.uid = data.get("userId")
-            self.token = data.get("token")
+            data = dict(r.json()).get("data")
+            self.uid = dict(data).get("userId")
+            self.token = dict(data).get("token")
             self.session.headers.update(
                 {"Authorization": f"Bearer {self.token}"}
             )
@@ -108,7 +108,7 @@ class Query:
 
         response = self.session.post(url=url, headers=headers, json=payload)
 
-        if response.status_code != 200 or response.json().get("data") is None:
+        if response.status_code != 200 or dict(response.json()).get("data") is None:
             logger.warning(
                 f"request for {url} failed. response data is {response.text}")
             return None
