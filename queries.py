@@ -451,9 +451,9 @@ class Query:
         return list
 
     def put_consign(self, result, headers: dict = {}) -> str:
-        print("put_consign_testpoint 1")
+        # print("put_consign_testpoint 1")
         url = f"{self.address}/api/v1/consignservice/consigns"
-        print("put_consign_testpoint 2")
+        # print("put_consign_testpoint 2")
         consignload = {
             "accountId": result["accountId"],
             "handleDate": time.strftime('%Y-%m-%d', time.localtime(time.time())),
@@ -467,10 +467,10 @@ class Query:
             "id": "",
             "isWithin": False
         }
-        print("put_consign_testpoint 3")
+        # print("put_consign_testpoint 3")
         res = self.session.put(url=url, headers=headers,
                                json=consignload)
-        print("put_consign_testpoint 4")
+        # print("put_consign_testpoint 4")
 
         order_id = result["orderId"]
         if res.status_code == 200 or res.status_code == 201:
@@ -480,7 +480,7 @@ class Query:
                 f"order {order_id} failed, code: {res.status_code}, text: {res.text}")
             return None
 
-        print("put_consign_testpoint 6")
+        # print("put_consign_testpoint 6")
         return order_id
 
 
