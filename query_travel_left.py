@@ -12,7 +12,7 @@ date = time.strftime("%Y-%m-%d", time.localtime())
 # base_address = "http://139.196.152.44:31000"
 # base_address = "http://10.107.91.15:30729"
 # base_address = "http://10.10.10.201:32075"
-base_address = "http://10.104.67.224:32059"
+base_address = "http://10.10.10.201:31732"
 
 
 def query_travel_left(headers):
