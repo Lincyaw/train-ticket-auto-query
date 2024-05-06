@@ -8,11 +8,6 @@ logger = logging.getLogger("query_and_preserve")
 uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 date = time.strftime("%Y-%m-%d", time.localtime())
 
-# base_address = "http://139.196.152.44:31000"
-# base_address = "http://10.107.91.15:30729"
-# base_address = "http://10.10.10.201:32075"
-# base_address = "http://10.10.10.201:31732"
-base_address = "http://10.10.10.201:31732"
 
 
 def query_admin_basic_price(headers):
