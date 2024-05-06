@@ -8,7 +8,7 @@ logger = logging.getLogger("atomic_queries")
 # base_address = "http://10.107.91.15:30729"
 # base_address = "http://10.10.10.201:32075"
 # base_address = "http://10.106.225.127:32075"
-base_address = "http://10.104.67.224:32059"
+base_address = "http://10.10.10.201:31732"
 
 headers = {
     "Cookie": "JSESSIONID=CAF07ABCB2031807D1C6043730C69F17; YsbCaptcha=ABF26F4AE563405894B1540057F62E7B",
