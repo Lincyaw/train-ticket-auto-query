@@ -1,11 +1,15 @@
     # HOW to use it:
     #run the command: "python auto_query.py http://your-train-ticket-url.com 10000"
 
+
+import os
 import time
 import sys
 import random
 from collections import defaultdict
 from queries import Query
+
+
 # Import necessary functions from the modules
 from scenarios import query_and_preserve
 from scenarios import query_and_cancel
@@ -14,24 +18,36 @@ from scenarios import query_and_execute
 from scenarios import query_and_consign
 from scenarios import query_and_pay
 from scenarios import query_and_rebook
-from scenarios import query_and_rebook
-# from query_and_collect_ticket import query_and_collect_ticket
-# from query_travel_left import query_travel_left
-# from query_admin_basic_config import query_admin_basic_config
-# from query_admin_basic_price import query_admin_basic_price
-# from query_advanced_ticket import query_advanced_ticket
-# # from query_advanced_ticket import query_advanced_ticket
 # # from query_and_cancel import query_and_cancel
 # # from query_and_collect_ticket import query_and_collect_ticket
 # # from query_and_enter_station import query_and_enter_station
 # # from query_and_preserve import query_and_preserve
 # # from query_and_put_consign import query_and_put_consign
 # from query_and_rebook import query_and_rebook
-# from query_food import query_food
-# # from query_order_and_pay import query_order_and_pay
-# from query_route import query_route
+
+
+# from query_and_collect_ticket import query_and_collect_ticket
+from query_admin_basic_config import query_admin_basic_config
+from query_admin_basic_price import query_admin_basic_price
+# from query_advanced_ticket import query_advanced_ticket  # Only support 'pyton3 query_advanced_ticket.py‘
+from query_food import query_food
+# from query_order_and_pay import query_order_and_pay
+# from query_route import query_route  # Only support 'pyton3 query_route.py‘
 from query_travel_left_parallel import query_travel_left_parallel
 from query_travel_left import query_travel_left
+
+
+
+#Import hearder we need
+headers = {
+    "Cookie": "JSESSIONID=CAF07ABCB2031807D1C6043730C69F17; YsbCaptcha=ABF26F4AE563405894B1540057F62E7B",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTYyNjM0NDgyNSwiZXhwIjoxNjI2MzQ4NDI1fQ.4eOMmQDhnq-Hjj1DuiH8duT6rXkP0QfeTnaXwvYGKD4",
+    "Content-Type": "application/json",
+    "Connection": "close"
+}
+
+
+
 
 # Import more functions as needed
 
@@ -44,23 +60,17 @@ function_list = [
     query_and_execute,
     query_and_consign,
     query_and_pay,
-    query_and_rebook
+    query_and_rebook,
 
     # query_and_collect_ticket,
-    # query_travel_left,
-    # query_admin_basic_config,
-    # query_admin_basic_price,
-    # query_advanced_ticket,
-    # query_and_cancel,
-    # query_and_collect_ticket,
-    # query_and_enter_station,
-    # query_and_put_consign,
-    # query_and_rebook,
-    # query_food,
+    query_admin_basic_config,
+    query_admin_basic_price,
+    # query_advanced_ticket,  # Only support 'pyton3 query_advanced_ticket.py‘
+    query_food,
     # query_order_and_pay,
-    # query_route,
-    # query_travel_left_parallel,
-    # query_travel_left
+    # query_route,  # Only support 'pyton3 query_route.py‘
+    query_travel_left_parallel,
+    query_travel_left
 ]
 
 # Create a defaultdict to store the counts of each function
@@ -80,10 +90,32 @@ def main(url, n_times):
         #test
         # print(random_function)
 
-        # Execute the selected function
-        random_function(q)
+        # # Execute the selected function  # 1st version
+        # random_function(q)
+
+        # Execute the selected function  # current version
+        if random_function.__name__.startswith("query_and_"):
+            random_function(q)
+
+        # else:
+        #     random_function(headers)  # Pass the URL to the individual query functions
+        else:
+            # if random_function.__name__ in ["query_admin_basic_config", "query_admin_basic_price", "query_food", "query_travel_left_parallel", "query_travel_left"]:
+                # Execute the individual query function as if running its Python script
+                script_name = random_function.__name__ + ".py"
+                command = f"python3 {script_name}"
+                os.system(command)
+            # else:
+            #     random_function(headers)
+
+
+
 
         # time.sleep(5)
+
+
+
+
 
         # Increment the count for the executed function
         function_counts[random_function.__name__] += 1
