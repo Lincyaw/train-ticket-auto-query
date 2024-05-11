@@ -26,7 +26,8 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    for i in range(330):
+    # for i in range(330):
+    for i in range(3):
         try:
             query_admin_basic_price(headers=headers)
             print("*****************************INDEX:" + str(i))

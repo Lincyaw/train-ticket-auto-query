@@ -54,7 +54,8 @@ if __name__ == '__main__':
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     print(f"start:{start_time}")
 
-    for i in range(30):
+    # for i in range(30):
+    for i in range(3):
         try:
             query_travel_left(headers=headers)
             print("*****************************INDEX:" + str(i))

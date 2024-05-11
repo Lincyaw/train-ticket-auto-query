@@ -35,7 +35,8 @@ if __name__ == '__main__':
 
     start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    for i in range(320):
+    # for i in range(320):
+    for i in range(2):
         try:
             query_food(headers=headers)
             print("*****************************INDEX:" + str(i))
