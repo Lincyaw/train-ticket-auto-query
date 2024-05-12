@@ -41,7 +41,7 @@ class Query:
         }
 
         data = '{"username":"' + username + '","password":"' + \
-            password + '","verificationCode":"1234"}'
+               password + '","verificationCode":"1234"}'
 
         # 获取cookies
         verify_url = self.address + '/api/v1/verifycode/generate'
@@ -65,7 +65,8 @@ class Query:
     def admin_login(self):
         return self.login
 
-    def query_high_speed_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
+    def query_high_speed_ticket(self, place_pair: tuple = (), time: str = "",
+                                headers: dict = {}) -> List[str]:
         """
         返回TripId 列表
         :param place_pair: 使用的开始结束组对
@@ -76,9 +77,11 @@ class Query:
         url = f"{self.address}/api/v1/travelservice/trips/left"
 
         # 定义20个中国城市简称列表
-        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou", "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
-          "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao", "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
-        
+        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou",
+                  "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
+                  "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao",
+                  "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
+
         # place_pairs = [("Shang Hai", "Su Zhou"),
         #                ("Su Zhou", "Shang Hai"),
         #                ("Nan Jing", "Shang Hai")]
@@ -108,7 +111,8 @@ class Query:
 
         response = self.session.post(url=url, headers=headers, json=payload)
 
-        if response.status_code != 200 or dict(response.json()).get("data") is None:
+        if response.status_code != 200 or dict(response.json()).get(
+                "data") is None:
             logger.warning(
                 f"request for {url} failed. response data is {response.text}")
             return None
@@ -118,9 +122,10 @@ class Query:
         trip_ids = []
         for d in data:
             trip_id = dict(dict(d).get("tripId")).get("type") + \
-                dict(dict(d).get("tripId")).get("number")
+                      dict(dict(d).get("tripId")).get("number")
             trip_ids.append(trip_id)
         return trip_ids
+
     # def query_high_speed_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> list:
     #     """
     #     Returns a list of TripIds
@@ -134,35 +139,35 @@ class Query:
     #     place_pairs = [("Shang Hai", "Su Zhou"),
     #                    ("Su Zhou", "Shang Hai"),
     #                    ("Nan Jing", "Shang Hai")]
-    
+
     #     if not place_pair:
     #         place_pair = random.choice(place_pairs)
-    
+
     #     if not time:
     #         time = datestr  # Ensure datestr is defined or passed appropriately
-    
+
     #     payload = {
     #         "departureTime": time,
     #         "startingPlace": place_pair[0],
     #         "endPlace": place_pair[1],
     #     }
-    
+
     #     response = self.session.post(url=url, headers=headers, json=payload)
-    
+
     #     if response.status_code != 200:
     #         logger.warning(f"request for {url} failed with status code {response.status_code}. response data is {response.text}")
     #         return None
-    
+
     #     try:
     #         data = response.json()
     #     except ValueError:
     #         logger.error("Invalid JSON response")
     #         return None
-    
+
     #     if not isinstance(data, dict) or 'data' not in data:
     #         logger.warning(f"Unexpected data format or 'data' key not found in response: {data}")
     #         return None
-    
+
     #     trip_ids = []
     #     trip_data = data['data']  # Assuming 'data' is a list of dictionaries containing trip details
     #     for d in trip_data:
@@ -170,15 +175,18 @@ class Query:
     #         trip_number = d.get("tripId", {}).get("number", "")
     #         if trip_type and trip_number:
     #             trip_ids.append(trip_type + trip_number)
-    
+
     #     return trip_ids
 
-    def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
+    def query_normal_ticket(self, place_pair: tuple = (), time: str = "",
+                            headers: dict = {}) -> List[str]:
         url = f"{self.address}/api/v1/travel2service/trips/left"
 
         # 定义20个中国城市简称列表
-        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou", "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
-          "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao", "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
+        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou",
+                  "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
+                  "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao",
+                  "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
 
         # place_pairs = [("Shang Hai", "Nan Jing"),
         #                ("Nan Jing", "Shang Hai")]
@@ -218,9 +226,10 @@ class Query:
         trip_ids = []
         for d in data:
             trip_id = dict(dict(d).get("tripId")).get("type") + \
-                dict(dict(d).get("tripId")).get("number")
+                      dict(dict(d).get("tripId")).get("number")
             trip_ids.append(trip_id)
         return trip_ids
+
     # def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> list:
     #     """
     #     Returns a list of TripIds for normal tickets
@@ -270,7 +279,9 @@ class Query:
 
     #     return trip_ids
 
-    def query_high_speed_ticket_parallel(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
+    def query_high_speed_ticket_parallel(self, place_pair: tuple = (),
+                                         time: str = "", headers: dict = {}) -> \
+            List[str]:
         """
         返回TripId 列表
         :param place_pair: 使用的开始结束组对
@@ -279,14 +290,16 @@ class Query:
         """
 
         url = f"{self.address}/api/v1/travelservice/trips/left_parallel"
-        
+
         # place_pairs = [("Shang Hai", "Su Zhou"),
         #                ("Su Zhou", "Shang Hai"),
         #                ("Nan Jing", "Shang Hai")]
 
-         # 定义20个中国城市简称列表
-        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou", "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
-          "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao", "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
+        # 定义20个中国城市简称列表
+        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou",
+                  "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
+                  "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao",
+                  "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
 
         # place_pairs = [("Shang Hai", "Nan Jing"),
         #                ("Nan Jing", "Shang Hai")]
@@ -326,11 +339,13 @@ class Query:
         trip_ids = []
         for d in data:
             trip_id = dict(dict(d).get("tripId")).get("type") + \
-                dict(dict(d).get("tripId")).get("number")
+                      dict(dict(d).get("tripId")).get("number")
             trip_ids.append(trip_id)
         return trip_ids
 
-    def query_advanced_ticket(self, place_pair: tuple = (), type: str = "cheapest", date: str = "", headers: dict = {}) -> List[str]:
+    def query_advanced_ticket(self, place_pair: tuple = (),
+                              type: str = "cheapest", date: str = "",
+                              headers: dict = {}) -> List[str]:
         """
         高级查询
         :param type [cheapet, quickest, minStation]
@@ -342,9 +357,11 @@ class Query:
         #                ("Su Zhou", "Shang Hai"),
         #                ("Nan Jing", "Shang Hai")]
 
-         # 定义20个中国城市简称列表
-        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou", "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
-          "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao", "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
+        # 定义20个中国城市简称列表
+        cities = ["Shenzhen", "Hong Kong", "Beijing", "Shanghai", "Guangzhou",
+                  "Chengdu", "Hangzhou", "Wuhan", "Chongqing", "Nanjing",
+                  "Tianjin", "Xi'an", "Suzhou", "Zhengzhou", "Qingdao",
+                  "Dalian", "Shenyang", "Changsha", "Ningbo", "Xiamen"]
 
         # place_pairs = [("Shang Hai", "Nan Jing"),
         #                ("Nan Jing", "Shang Hai")]
@@ -400,7 +417,8 @@ class Query:
 
         return [{"assurance": "1"}]
 
-    def query_food(self, place_pair: tuple = ("Shang Hai", "Su Zhou"), train_num: str = "D1345", headers: dict = {}):
+    def query_food(self, place_pair: tuple = ("Shang Hai", "Su Zhou"),
+                   train_num: str = "D1345", headers: dict = {}):
         url = f"{self.address}/api/v1/foodservice/foods/2021-07-14/{place_pair[0]}/{place_pair[1]}/{train_num}"
 
         response = self.session.get(url=url, headers=headers)
@@ -441,7 +459,9 @@ class Query:
         # pprint(ids)
         return ids
 
-    def query_orders(self, types: tuple = tuple([0, 1]), query_other: bool = False, headers: dict = {}) -> List[tuple]:
+    def query_orders(self, types: tuple = tuple([0, 1]),
+                     query_other: bool = False, headers: dict = {}) -> List[
+        tuple]:
         """
         返回(orderId, tripId) triple list for inside_pay_service
         :param headers:
@@ -479,10 +499,12 @@ class Query:
 
         return pairs
 
-    def query_other_orders(self, types: tuple = tuple([0, 1]), headers: dict = {}) -> List[tuple]:
+    def query_other_orders(self, types: tuple = tuple([0, 1]),
+                           headers: dict = {}) -> List[tuple]:
         return self.query_orders(types, True, headers)
 
-    def query_orders_all_info(self, query_other: bool = False, headers: dict = {}) -> List[dict]:
+    def query_orders_all_info(self, query_other: bool = False,
+                              headers: dict = {}) -> List[dict]:
         """
         返回(orderId, tripId) triple list for consign service
         :param headers:
@@ -526,12 +548,14 @@ class Query:
         # print("put_consign_testpoint 2")
 
         consignee_list = [str(i) for i in range(1, 201)]
-        phone_list = [''.join(random.choices('0123456789', k=11)) for _ in range(100)]
+        phone_list = [''.join(random.choices('0123456789', k=11)) for _ in
+                      range(100)]
         weight_list = [str(i) for i in range(1, 51)]
 
         consignload = {
             "accountId": result["accountId"],
-            "handleDate": time.strftime('%Y-%m-%d', time.localtime(time.time())),
+            "handleDate": time.strftime('%Y-%m-%d',
+                                        time.localtime(time.time())),
             "targetDate": result["targetDate"],
             "from": result["from"],
             "to": result["to"],
@@ -557,7 +581,6 @@ class Query:
 
         # print("put_consign_testpoint 6")
         return order_id
-
 
     def query_route(self, routeId: str = '', headers: dict = {}):
         if routeId == '':
@@ -659,7 +682,8 @@ class Query:
             logger.warning(f"config failed")
             return None
 
-    def rebook_ticket(self, old_order_id, old_trip_id, new_trip_id, new_date="", new_seat_type="", headers: dict = {}):
+    def rebook_ticket(self, old_order_id, old_trip_id, new_trip_id, new_date="",
+                      new_seat_type="", headers: dict = {}):
         url = f"{self.address}/api/v1/rebookservice/rebook"
 
         if new_date == "":
@@ -696,7 +720,9 @@ class Query:
                 f"faild to query admin travel with status_code: {r.status_code}")
         return
 
-    def preserve(self, start: str, end: str, trip_ids: List = [], is_high_speed: bool = True, date: str = "", headers: dict = {}):
+    def preserve(self, start: str, end: str, trip_ids: List = [],
+                 is_high_speed: bool = True, date: str = "",
+                 headers: dict = {}):
         if date == "":
             date = datestr
 
