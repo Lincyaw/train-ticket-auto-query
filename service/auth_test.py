@@ -8,10 +8,12 @@ def test_get_auth_hello():
     result = hello(client)
     assert result == "hello"
 
+
 # TODO
 def test_get_users_hello():
     result = users_hello(client)
     print(f"get_users_hello result: {result}")
+
 
 def test_post_users_login():
     basic_auth_dto = {'username': 'fdse_microservice', 'password': '111111',

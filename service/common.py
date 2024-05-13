@@ -23,7 +23,7 @@ class HttpClient:
 
         :param url: 请求的 URL
         :param method: 请求方法，默认为 'GET'
-        :param params: 请求的查询参数，字典类型
+        :param params: 请求的查询参数，字典类型 xxx?query=xxx&username=xxx
         :param data: 请求的数据，字典类型； 表单
         :param json: 请求的 JSON 数据，字典类型； 同时有 json 和 data，则 json 优先级更高
         :param headers: 请求头，字典类型

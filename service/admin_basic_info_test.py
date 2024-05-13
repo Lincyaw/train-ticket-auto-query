@@ -5,7 +5,7 @@ from auth import *
 
 client = HttpClient()
 
-
+# TODO
 def test_get_welcome():
     response = get_welcome(client, None)
     print(response)
@@ -14,6 +14,11 @@ def test_get_welcome():
 def test_get_contacts():
     headers = {}
     response = get_contacts(client, headers)
+    print(response['data'])
+
+    contact = {'id': 'New Contact'}
+    response = create_contact(client, contact, headers)
+
 
 
 def test_delete_contact():
