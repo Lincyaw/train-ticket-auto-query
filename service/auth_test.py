@@ -1,28 +1,36 @@
-from auth import *
+from auth_service import *
 from common import *
 
 client = HttpClient()
 
 
 def test_get_auth_hello():
-    result = hello(client)
-    assert result == "hello"
+    result = auth_hello(client)
+    print(f"get_auth_hello result: {result}")
 
 
-# TODO
 def test_get_users_hello():
     result = users_hello(client)
     print(f"get_users_hello result: {result}")
 
 
+def test_create_default_user():
+    auth_dto = Auth_dto('1','default','123456')
+    result = create_defalt_user(client,auth_dto)
+    print(f"test_create_default_user result: {result}")
+
+
 def test_post_users_login():
-    basic_auth_dto = {'username': 'fdse_microservice', 'password': '111111',
-                      "verificationCode": "1234"}
+    basic_auth_dto = Auth_dto(1,'default','123456')
     headers = {'Content-Type': 'application/json'}
 
     result = users_login(client, basic_auth_dto, headers)
     print(f"post_users_login result: {result}")
 
+
+def test_delete_user():
+    result = delete_user(client,1,None)
+    print(f"get_users result: {result}")
 
 def test_get_users():
     result = get_users(client, None)

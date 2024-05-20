@@ -3,6 +3,32 @@ from collections import defaultdict
 import random
 from config import BASE_URL
 
+class User_dto:
+
+    def __init__(self, userId, userName, password, gender, documentType, documentNum, email):
+        self.user_id = userId
+        self.user_name = userName
+        self.user_password = password
+        self.gender = gender
+        self.document_type = documentType
+        self.document_num = documentNum
+        self.email = email
+
+    def to_dict(self):
+        return {"userId":self.user_id, "userName":self.user_name, "password":self.user_password,
+                "gender":self.gender, "documentType":self.document_type, "documentNum":self.document_num}
+
+
+class Auth_dto:
+
+    def __init__(self, userId, userName, password):
+        self.user_id=userId
+        self.user_name=userName
+        self.user_password=password
+
+    def to_dict(self):
+        return {"userId": self.user_id, "userName": self.user_name, "password": self.user_password}
+
 
 class HttpClient:
     def __init__(self, max_samples=3):
