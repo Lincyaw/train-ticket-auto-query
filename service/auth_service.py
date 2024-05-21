@@ -18,16 +18,25 @@ class RegisterResponse:
 
 
 @dataclass
+class Authority:
+    authority: str
+
+@dataclass
 class User:
-    accountNonExpired: bool
-    accountNonLocked: bool
-    authorities: Dict[str, Any]  # 你可以根据具体的结构修改类型
-    credentialsNonExpired: bool
-    enabled: bool
-    password: str
-    roles: List[str]
     userId: str
     username: str
+    password: str
+    roles: List[str]
+    enabled: bool
+    accountNonLocked: bool
+    credentialsNonExpired: bool
+    accountNonExpired: bool
+    authorities: List[Authority]
+@dataclass
+class DtoLoginUser:
+    password: str
+    username: str
+    verificationCode: str
 
 
 def auth_hello(client: HttpClient):
@@ -53,14 +62,30 @@ def create_defalt_user(client: HttpClient, auth_dto: DtoCreateUser):
     return from_dict(RegisterResponse, response.json())
 
 
-def get_users(client: HttpClient, headers):
+def get_users(client: HttpClient):
     """
     /api/v1/users GET
+    需要 admin 用户权限
     """
     url = "/api/v1/users"
     response = client.request(BASE_URL + url, method='GET',
                               headers={"Accept": "*/*"})
-    return from_dict(User, response.json()) if response != None else None
+    users = []
+    for item in response.json():
+        authorities = [Authority(**auth) for auth in item['authorities']]
+        user = User(
+            userId=item['userId'],
+            username=item['username'],
+            password=item['password'],
+            roles=item['roles'],
+            enabled=item['enabled'],
+            accountNonLocked=item['accountNonLocked'],
+            credentialsNonExpired=item['credentialsNonExpired'],
+            accountNonExpired=item['accountNonExpired'],
+            authorities=authorities
+        )
+        users.append(user)
+    return users
 
 
 def users_hello(client: HttpClient):
@@ -72,7 +97,7 @@ def users_hello(client: HttpClient):
     return response.text if response else None
 
 
-def users_login(client, basic_auth_dto: DtoCreateUser, headers):
+def users_login(client, basic_auth_dto: DtoLoginUser, headers):
     """
     /api/v1/users/login POST
     """
@@ -82,10 +107,11 @@ def users_login(client, basic_auth_dto: DtoCreateUser, headers):
     return response.json() if response else None
 
 
-def delete_user(client, user_id, headers):
+def delete_user(client, user_id):
     """
     /api/v1/users/{userId} DELETE
+    需要 admin 用户权限
     """
     url = f"/api/v1/users/{user_id}"
-    response = client.request(BASE_URL + url, method='DELETE', headers=headers)
+    response = client.request(BASE_URL + url, method='DELETE')
     return response.json() if response else None

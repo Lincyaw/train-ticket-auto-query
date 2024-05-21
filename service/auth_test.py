@@ -1,5 +1,3 @@
-
-
 from auth_service import *
 from common import *
 
@@ -12,10 +10,9 @@ def test_get_auth_hello():
     assert result == "hello"
 
 
-
-
 def test_create_default_user():
-    auth_dto = DtoCreateUser(userId='1', userName='default', password='123456')
+    auth_dto = DtoCreateUser(userId='111111', userName='default3',
+                             password='12345226')
     result = create_defalt_user(client, auth_dto)
     assert result.data.userId == auth_dto.userId
     assert result.data.userName == auth_dto.userName
@@ -29,7 +26,8 @@ def test_get_users_hello():
 
 
 def test_post_users_login():
-    basic_auth_dto = DtoCreateUser(userId="1", userName='default', password='123456')
+    basic_auth_dto = DtoLoginUser(username='default2',
+                                  password='123456', verificationCode="123")
     headers = {'Content-Type': 'application/json'}
 
     result = users_login(client, basic_auth_dto, headers)
@@ -37,10 +35,13 @@ def test_post_users_login():
 
 
 def test_delete_user():
-    result = delete_user(client, 1, None)
-    print(f"get_users result: {result}")
+    admin_client = HttpClient(max_samples=3, admin=True)
+    result = delete_user(admin_client, 1)
+    print(f"delete user result: {result}")
 
 
 def test_get_users():
-    result = get_users(client, None)
-    print(f"get_users result: {result}")
+    admin = HttpClient(admin=True)
+    result = get_users(admin)
+    for user in result:
+        print(f"get_users result: {user}")

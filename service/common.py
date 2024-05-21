@@ -34,7 +34,7 @@ def is_dataclass(cls):
 
 
 class HttpClient:
-    def __init__(self, max_samples=3):
+    def __init__(self, max_samples=3, admin=False):
         self.session = requests.Session()  # 创建 Session 对象
         self.stats = defaultdict(lambda: {
             'total': 0,
@@ -42,6 +42,7 @@ class HttpClient:
             'response_samples': [],
             'error_samples': []
         })  # 请求统计信息
+        self.admin = admin
         self.max_samples = max_samples  # 最大样本数
         self.__auth()
 
@@ -133,7 +134,6 @@ class HttpClient:
         self.stats.clear()
 
     def __auth(self):
-
         self.session.headers.update({
             'Proxy-Connection': 'keep-alive',
             'Accept': 'application/json',
@@ -143,8 +143,14 @@ class HttpClient:
             'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
             'Connection': 'keep-alive',
         })
-        basic_auth_dto = {'username': 'fdse_microservice', 'password': '111111',
-                          "verificationCode": "1234"}
+        if self.admin:
+            basic_auth_dto = {'username': 'admin',
+                              'password': '222222',
+                              "verificationCode": "1234"}
+        else:
+            basic_auth_dto = {'username': 'fdse_microservice', 'password':
+                '111111',
+                              "verificationCode": "1234"}
         headers = {'Content-Type': 'application/json'}
 
         verify_url = BASE_URL + '/api/v1/verifycode/generate'
