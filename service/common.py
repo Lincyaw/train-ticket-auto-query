@@ -2,32 +2,35 @@ import requests
 from collections import defaultdict
 import random
 from config import BASE_URL
+from dataclasses import fields
+from typing import Type, Any, TypeVar, Dict
 
-class User_dto:
-
-    def __init__(self, userId, userName, password, gender, documentType, documentNum, email):
-        self.user_id = userId
-        self.user_name = userName
-        self.user_password = password
-        self.gender = gender
-        self.document_type = documentType
-        self.document_num = documentNum
-        self.email = email
-
-    def to_dict(self):
-        return {"userId":self.user_id, "userName":self.user_name, "password":self.user_password,
-                "gender":self.gender, "documentType":self.document_type, "documentNum":self.document_num}
+T = TypeVar('T')
 
 
-class Auth_dto:
+def from_dict(data_class: Type[T], data: Dict[str, Any]) -> T:
+    """
+    将字典转换为 dataclass 实例的递归函数。
+    """
+    fieldtypes = {f.name: f.type for f in fields(data_class)}
+    init_values = {}
+    for field in fields(data_class):
+        field_name = field.name
+        field_type = field.type
+        if field_name in data:
+            if is_dataclass(field_type):
+                init_values[field_name] = from_dict(field_type,
+                                                    data[field_name])
+            else:
+                init_values[field_name] = data[field_name]
+    return data_class(**init_values)
 
-    def __init__(self, userId, userName, password):
-        self.user_id=userId
-        self.user_name=userName
-        self.user_password=password
 
-    def to_dict(self):
-        return {"userId": self.user_id, "userName": self.user_name, "password": self.user_password}
+def is_dataclass(cls):
+    """
+    检查给定的类是否是 dataclass。
+    """
+    return hasattr(cls, '__dataclass_fields__')
 
 
 class HttpClient:
