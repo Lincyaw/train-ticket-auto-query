@@ -2,16 +2,24 @@ import requests
 from collections import defaultdict
 import random
 from config import BASE_URL
-from dataclasses import fields
+from dataclasses import fields, dataclass
 from typing import Type, Any, TypeVar, Dict
 
-T = TypeVar('T')
+T = TypeVar('T', bound='DataclassInstance')
+
+
+@dataclass
+class DataclassInstance:
+    pass
 
 
 def from_dict(data_class: Type[T], data: Dict[str, Any]) -> T:
     """
     将字典转换为 dataclass 实例的递归函数。
     """
+    if not is_dataclass(data_class):
+        raise ValueError(f"{data_class} is not a dataclass type")
+
     fieldtypes = {f.name: f.type for f in fields(data_class)}
     init_values = {}
     for field in fields(data_class):

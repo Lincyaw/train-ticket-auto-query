@@ -1,5 +1,4 @@
 from config import *
-from common import User_dto
 
 def userService_hello(client):
     url = "/api/v1/userservice/users/hello"
@@ -21,7 +20,7 @@ def get_user_by_id(client, user_id, headers):
     response = client.request(BASE_URL + url, method='GET', headers=headers)
     return response.json() if response else None
 
-def create_user(client, user_dto:User_dto, headers):
+def create_user(client, user_dto, headers):
     url = "/api/v1/userservice/users/register"
     response = client.request(BASE_URL + url, method='POST',
                               json=user_dto.to_dict(), headers=headers)
@@ -32,7 +31,7 @@ def delete_user_by_id(client, user_id, headers):
     response = client.request(BASE_URL + url, method='DELETE', headers=headers)
     return response.json() if response else None
 
-def update_user(client, user_dto:User_dto, headers):
+def update_user(client, user_dto, headers):
     url = '/api/v1/userservice/users'
     response = client.request(BASE_URL + url, method='PUT', headers=headers, json=user_dto.to_dict())
     return response.json() if response else None

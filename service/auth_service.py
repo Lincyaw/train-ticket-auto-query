@@ -11,18 +11,19 @@ class DtoCreateUser:
 
 
 @dataclass
-class RegisterResponse:
+class RegisterResponse(DataclassInstance):
     data: DtoCreateUser
     msg: str
     status: int
 
 
 @dataclass
-class Authority:
+class Authority(DataclassInstance):
     authority: str
 
+
 @dataclass
-class User:
+class User(DataclassInstance):
     userId: str
     username: str
     password: str
@@ -32,8 +33,10 @@ class User:
     credentialsNonExpired: bool
     accountNonExpired: bool
     authorities: List[Authority]
+
+
 @dataclass
-class DtoLoginUser:
+class DtoLoginUser(DataclassInstance):
     password: str
     username: str
     verificationCode: str
