@@ -1,4 +1,6 @@
-requests
+requests~=2.32.2
 pytest
 types-requests
 mypy
+faker
+locust~=2.27.0
