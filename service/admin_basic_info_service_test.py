@@ -181,5 +181,54 @@ class TestAdminBasicInfoService(unittest.TestCase):
         self.assertIsInstance(response, dict)
 
 
+    def test_end2end(self):
+        """
+        End-to-end test: query, add, update, delete
+        """
+        # 1. Query contacts
+        contacts_before =get_all_contacts(self.client, self.host)
+        print("Contacts before:", contacts_before)
+
+        # 2. Add a new contact
+        new_contact = ContactBody(id="99992", 
+                                  accountId="99919",
+                                  name="New Contact1112",
+                                  documentType=22,
+                                  documentNumber="9999111",
+                                  phoneNumber="99999999111")
+        add_response = add_contact(self.client, new_contact, self.host)
+        print("New contact added:", add_response)
+
+        # 3. Query contacts and verify addition
+        contacts_after_add = get_all_contacts(self.client, self.host)
+        print("Contacts after addition:", contacts_after_add)
+        assert len(contacts_after_add.data) == len(contacts_before.data) + 1
+        assert any(contact["id"] == new_contact.id for contact in contacts_after_add.data)
+
+        # 4. Update the new contact
+        updated_contact = ContactBody(id="999", 
+                                      accountId="999",
+                                      name="Updated Contact",
+                                      documentType=2,
+                                      documentNumber="999",
+                                      phoneNumber="999999")
+        update_response = modify_contact(self.client, updated_contact, self.host)
+        print("Contact updated:", update_response)
+
+        # 5. Query contacts and verify update
+        contacts_after_update = get_all_contacts(self.client, self.host)
+        print("Contacts after update:", contacts_after_update)
+        assert any(contact["name"] == updated_contact.name for contact in contacts_after_update.data)
+
+        # 6. Delete the new contact
+        delete_response = delete_contact(self.client, new_contact.id, self.host)
+        print("Contact deleted:", delete_response)
+
+        # 7. Query contacts and verify deletion
+        contacts_after_delete = get_all_contacts(self.client, self.host)
+        print("Contacts after deletion:", contacts_after_delete)
+        assert len(contacts_after_delete.data) == len(contacts_before.data)
+        assert not any(contact["id"] == new_contact.id for contact in contacts_after_delete.data)
+
 if __name__ == '__main__':
     unittest.main()
