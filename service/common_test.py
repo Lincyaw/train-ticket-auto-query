@@ -1,7 +1,7 @@
 import requests
 from collections import defaultdict
 import random
-from config import BASE_URL
+from service.config import BASE_URL
 
 
 class HttpClient:
