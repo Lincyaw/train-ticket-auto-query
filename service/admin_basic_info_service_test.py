@@ -1,9 +1,9 @@
 import unittest
-import requests
 from service.admin_basic_info_service import *
 from service.auth_service import DtoLoginUser, users_login
 from service.test_utils import BASE_URL, headers
 from faker import Faker
+
 fake = Faker()
 
 
@@ -12,7 +12,7 @@ class TestAdminBasicInfoService(unittest.TestCase):
         self.client = requests.Session()
         self.host = BASE_URL
         basic_auth_dto = DtoLoginUser(username='admin',
-                                  password='222222', verificationCode="123")
+                                      password='222222', verificationCode="123")
         token = users_login(self.client, basic_auth_dto, headers, BASE_URL)
         self.client.headers.update({'Authorization': f'Bearer {token}'})
 
@@ -43,27 +43,26 @@ class TestAdminBasicInfoService(unittest.TestCase):
         self.assertIsInstance(response, dict)
 
     def test_modify_contact(self):
-        contact = ContactBody (id=fake.uuid4(), 
-                              accountId = fake.uuid4(),
+        contact = ContactBody(id=fake.uuid4(),
+                              accountId=fake.uuid4(),
                               name="Modified Contact",
-                              documentType = 2,
-                              documentNumber = "2",
-                              phoneNumber = "123456"
-                            )
+                              documentType=2,
+                              documentNumber="2",
+                              phoneNumber="123456"
+                              )
         response = modify_contact(self.client, contact, self.host)
         self.assertIsInstance(response, dict)
 
     def test_add_contact(self):
-        contact = ContactBody (id=fake.uuid4(), 
-                              accountId = fake.uuid4(),
+        contact = ContactBody(id=fake.uuid4(),
+                              accountId=fake.uuid4(),
                               name=fake.user_name(),
-                              documentType = 3,
-                              documentNumber = "4",
-                              phoneNumber = "4567891011"
-                            )
-        # orginal_length = len(contacts_after_add.data)
+                              documentType=3,
+                              documentNumber="4",
+                              phoneNumber="4567891011"
+                              )
         response = add_contact(self.client, contact, self.host)
-        # assert len(contacts_after_add.data) == len(contacts_before.data) + 1
+        assert response.msg == 'Create Success'
 
     def test_get_all_stations(self):
         stations = get_all_stations(self.client, self.host)
@@ -114,12 +113,13 @@ class TestAdminBasicInfoService(unittest.TestCase):
         self.assertIsInstance(response, dict)
 
     def test_modify_train(self):
-        train_type = TrainTypeBody(id="1", name="Modified Train", economyClass= 111, confortClass=111, averageSpeed=1111)
+        train_type = TrainTypeBody(id="1", name="Modified Train", economyClass=111, confortClass=111, averageSpeed=1111)
         response = modify_train(self.client, train_type, self.host)
         self.assertIsInstance(response, dict)
 
     def test_add_train(self):
-        train_type = TrainTypeBody(id="2", name="222 Modified Train", economyClass= 222, confortClass=222, averageSpeed=2222)
+        train_type = TrainTypeBody(id="2", name="222 Modified Train", economyClass=222, confortClass=222,
+                                   averageSpeed=2222)
         response = add_train(self.client, train_type, self.host)
         self.assertIsInstance(response, dict)
 
@@ -134,7 +134,6 @@ class TestAdminBasicInfoService(unittest.TestCase):
             assert isinstance(config["name"], str), "Expected 'name' to be a string"
             assert "description" in config, "Expected 'name' key in contact dictionary"
             assert isinstance(config["description"], str), "Expected 'name' to be a string"
-
 
     def test_delete_config(self):
         config_name = "config1"
@@ -182,17 +181,16 @@ class TestAdminBasicInfoService(unittest.TestCase):
         response = add_price(self.client, price_info, self.host)
         self.assertIsInstance(response, dict)
 
-
     def test_end2end(self):
         """
         End-to-end test: query, add, update, delete
         """
         # 1. Query contacts
-        contacts_before =get_all_contacts(self.client, self.host)
+        contacts_before = get_all_contacts(self.client, self.host)
         print("Contacts before:", contacts_before)
-        
+
         # 2. Add a new contact
-        new_contact = ContactBody(id=fake.uuid4(), 
+        new_contact = ContactBody(id=fake.uuid4(),
                                   accountId=fake.uuid4(),
                                   name=fake.user_name(),
                                   documentType=22,
@@ -208,7 +206,7 @@ class TestAdminBasicInfoService(unittest.TestCase):
         # assert any(contact["id"] == new_contact.id for contact in contacts_after_add.data)
 
         # 4. Update the new contact
-        updated_contact = ContactBody(id="4d94638a-0094-41b5-be76-4485d10cd047", 
+        updated_contact = ContactBody(id="4d94638a-0094-41b5-be76-4485d10cd047",
                                       accountId="538fa219-acf2-4bc2-8ba8-8be24a0e608b",
                                       name="Updated Contact",
                                       documentType=7,
@@ -231,6 +229,7 @@ class TestAdminBasicInfoService(unittest.TestCase):
         print("Contacts after deletion:", contacts_after_delete)
         assert len(contacts_after_delete.data) == len(contacts_before.data) + 1
         assert not any(contact["id"] == new_contact.id for contact in contacts_after_delete.data)
+
 
 if __name__ == '__main__':
     unittest.main()

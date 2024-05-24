@@ -1,6 +1,7 @@
 from service.auth_service import *
 from service.test_utils import *
 
+
 def test_get_auth_hello():
     client = requests.Session()
     result = auth_hello(client, BASE_URL)
@@ -33,7 +34,6 @@ def test_post_users_login():
     client = requests.Session()
     basic_auth_dto = DtoLoginUser(username='fdse_microservice',
                                   password='111111', verificationCode="123")
-    headers = {'Content-Type': 'application/json'}
     result = users_login(client, basic_auth_dto, headers, BASE_URL)
     print(f"post_users_login result: {result}")
 

@@ -2,6 +2,8 @@ from typing import List
 import requests
 from service.common import *
 from dataclasses import dataclass, asdict
+
+
 @dataclass
 class ContactBody(DataclassInstance):
     id: str
@@ -10,6 +12,7 @@ class ContactBody(DataclassInstance):
     documentType: int
     documentNumber: str
     phoneNumber: str
+
 
 @dataclass
 class Contact(DataclassInstance):
@@ -40,6 +43,7 @@ class TrainTypeBody(DataclassInstance):
     confortClass: int
     averageSpeed: int
 
+
 @dataclass
 class TrainType(DataclassInstance):
     status: int
@@ -52,6 +56,7 @@ class ConfigBody(DataclassInstance):
     name: str
     value: str
     description: str
+
 
 @dataclass
 class Config(DataclassInstance):
@@ -67,6 +72,7 @@ class PriceInfoBody(DataclassInstance):
     routeId: str
     basicPriceRate: float
     firstClassPriceRate: float
+
 
 @dataclass
 class PriceInfo(DataclassInstance):
@@ -147,7 +153,7 @@ def modify_station(client: requests.Session, station: StationBody, host: str):
     return response.json()
 
 
-def add_station(client: requests.Session, station: Station, host: str):
+def add_station(client: requests.Session, station: StationBody, host: str):
     """
     /api/v1/adminbasicservice/adminbasic/stations POST
     """
@@ -174,7 +180,7 @@ def delete_train(client: requests.Session, train_id: str, host: str):
     return response.json()
 
 
-def modify_train(client: requests.Session, train_type: TrainType, host: str):
+def modify_train(client: requests.Session, train_type: TrainTypeBody, host: str):
     """
     /api/v1/adminbasicservice/adminbasic/trains PUT
     """
@@ -183,7 +189,7 @@ def modify_train(client: requests.Session, train_type: TrainType, host: str):
     return response.json()
 
 
-def add_train(client: requests.Session, train_type: TrainType, host: str):
+def add_train(client: requests.Session, train_type: TrainTypeBody, host: str):
     """
     /api/v1/adminbasicservice/adminbasic/trains POST
     """
@@ -210,7 +216,7 @@ def delete_config(client: requests.Session, config_name: str, host: str):
     return response.json()
 
 
-def modify_config(client: requests.Session, config: Config, host: str):
+def modify_config(client: requests.Session, config: ConfigBody, host: str):
     """
     /api/v1/adminbasicservice/adminbasic/configs PUT
     """
@@ -219,7 +225,7 @@ def modify_config(client: requests.Session, config: Config, host: str):
     return response.json()
 
 
-def add_config(client: requests.Session, config: Config, host: str):
+def add_config(client: requests.Session, config: ConfigBody, host: str):
     """
     /api/v1/adminbasicservice/adminbasic/configs POST
     """
@@ -245,7 +251,8 @@ def delete_price(client: requests.Session, price_id: str, host: str):
     response = client.request(url=host + url, method='DELETE')
     return response.json()
 
-def modify_price(client: requests.Session, price_info: PriceInfo, host: str):
+
+def modify_price(client: requests.Session, price_info: PriceInfoBody, host: str):
     """
     /api/v1/adminbasicservice/adminbasic/prices PUT
     """
@@ -253,7 +260,8 @@ def modify_price(client: requests.Session, price_info: PriceInfo, host: str):
     response = client.request(url=host + url, method='PUT', json=asdict(price_info))
     return response.json()
 
-def add_price(client: requests.Session, price_info: PriceInfo, host: str):
+
+def add_price(client: requests.Session, price_info: PriceInfoBody, host: str):
     """
     /api/v1/adminbasicservice/adminbasic/prices POST
     """
