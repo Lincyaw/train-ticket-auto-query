@@ -117,7 +117,7 @@ def add_contact(client: requests.Session, contact: ContactBody, host: str):
     """
     url = "/api/v1/adminbasicservice/adminbasic/contacts"
     response = client.request(url=host + url, method='POST', json=asdict(contact))
-    return response.json()
+    return from_dict(Contact, response.json())
 
 
 def get_all_stations(client: requests.Session, host: str):
