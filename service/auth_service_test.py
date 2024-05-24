@@ -1,6 +1,7 @@
 from service.auth_service import *
 from service.test_utils import *
 
+
 def test_get_auth_hello():
     client = requests.Session()
     result = auth_hello(client, BASE_URL)
@@ -33,7 +34,6 @@ def test_post_users_login():
     client = requests.Session()
     basic_auth_dto = DtoLoginUser(username='fdse_microservice',
                                   password='111111', verificationCode="123")
-    headers = {'Content-Type': 'application/json'}
     result = users_login(client, basic_auth_dto, headers, BASE_URL)
     print(f"post_users_login result: {result}")
 
@@ -67,7 +67,7 @@ def test_end2end():
     # 2. 加
     # 3. 查；验证有没有加成功
     # 4. 改（如果有）(是否有 Update)
-    # 5. 查；验证有没有改成功（是否有update）
+    # 5. 查；验证有没有改成功 (如果有)（是否有update）
     # 6. 删
     # 7. 查；验证有没有删成功
     """
