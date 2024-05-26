@@ -1,7 +1,7 @@
 from typing import List
 import requests
 from service.common import *
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 
 
 @dataclass
@@ -46,7 +46,7 @@ def query_for_travel(client: requests.Session, travel: Travel, host: str, header
     /api/v1/basicservice/basic/travel POST
     """
     url = "/api/v1/basicservice/basic/travel"
-    response = client.request(url=host + url, method='POST', json=dataclass.asdict(travel), headers=headers)
+    response = client.request(url=host + url, method='POST', json=asdict(travel), headers=headers)
     return from_dict(TravelResult, response.json())
 
 
@@ -55,7 +55,7 @@ def query_for_travels(client: requests.Session, travels: List[Travel], host: str
     /api/v1/basicservice/basic/travels POST
     """
     url = "/api/v1/basicservice/basic/travels"
-    response = client.request(url=host + url, method='POST', json=[dataclass.asdict(travel) for travel in travels],
+    response = client.request(url=host + url, method='POST', json=[asdict(travel) for travel in travels],
                               headers=headers)
     return from_dict(TravelResult, response.json())
 

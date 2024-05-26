@@ -1,6 +1,6 @@
 import requests
 from service.common import *
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 
 @dataclass
@@ -33,7 +33,7 @@ def create_config(client: requests.Session, config: Config, host: str, headers: 
     /api/v1/configservice/configs POST
     """
     url = "/api/v1/configservice/configs"
-    response = client.request(url=host + url, method='POST', json=dataclass.asdict(config), headers=headers)
+    response = client.request(url=host + url, method='POST', json=asdict(config), headers=headers)
     return response.json()
 
 
@@ -42,7 +42,7 @@ def update_config(client: requests.Session, config: Config, host: str, headers: 
     /api/v1/configservice/configs PUT
     """
     url = "/api/v1/configservice/configs"
-    response = client.request(url=host + url, method='PUT', json=dataclass.asdict(config), headers=headers)
+    response = client.request(url=host + url, method='PUT', json=asdict(config), headers=headers)
     return response.json()
 
 
