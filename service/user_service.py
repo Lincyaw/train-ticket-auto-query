@@ -22,6 +22,85 @@ class Response(DataclassInstance):
     data: List[UserDto]
 
 
+# 新增dataclass
+# @dataclass
+# class UserDto:
+#     userId: str
+#     userName: str
+#     password: str
+#     gender: str
+#     documentType: str
+#     documentNum: str
+
+@dataclass
+class UserAllDto:
+    userId: str
+    userName: str
+    password: str
+    gender: str
+    documentType: str
+    documentNum: str
+
+
+@dataclass
+class UserInfoDto:
+    userId: str
+    userName: str
+    gender: str
+    documentType: str
+    documentNum: str
+
+
+# @dataclass
+# class Response:
+#     status: bool
+#     msg: str
+#     data: dict
+
+@dataclass
+class GetAllUserResult:
+    status: bool
+    msg: str
+    data: List[UserInfoDto]
+
+
+@dataclass
+class GetUserByUserNameResult:
+    status: bool
+    msg: str
+    data: UserAllDto
+
+
+@dataclass
+class GetUserByUserIdResult:
+    status: bool
+    msg: str
+    data: UserAllDto
+
+
+@dataclass
+class RegisterUserResult:
+    status: bool
+    msg: str
+    data: None
+
+
+@dataclass
+class DeleteUserResult:
+    status: bool
+    msg: str
+    data: str
+
+
+@dataclass
+class UpdateUserResult:
+    status: bool
+    msg: str
+    data: str
+
+
+#
+
 def test_hello(client: requests.Session, host: str):
     """
     /api/v1/userservice/users/hello GET
