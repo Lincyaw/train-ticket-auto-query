@@ -30,7 +30,7 @@ def test_get_all_orders():
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
     result = get_all_orders(client, BASE_URL)
-    print(len(result['data']))
+    print(result['data'])
     assert result['msg'] == 'Get the orders successfully!'
 
 def test_add_order():
@@ -48,13 +48,13 @@ def test_add_order():
                               "contactsName": "string",
                               "differenceMoney": "string",
                               "documentType": 0,
-                              "from": "string",
+                              "from": "beijing",
                               "id": str(uuid.uuid4()),
                               "price": "string",
                               "seatClass": 0,
                               "seatNumber": "string",
                               "status": 0,
-                              "to": "string",
+                              "to": "shanghai",
                               "trainNumber": "string",
                               "travelDate": "string",
                               "travelTime": "string"
@@ -69,23 +69,22 @@ def test_update_order():
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
     newOrder = {
-                              "accountId": "string",
-                              "boughtDate": "string",
-                              "coachNumber": 0,
-                              "contactsDocumentNumber": "string",
-                              "contactsName": "string",
-                              "differenceMoney": "string",
-                              "documentType": 0,
-                              "from": "string",
-                              "id": '3ddae130-38c1-4e8e-abee-11d83f87561f',
-                              "price": "string",
-                              "seatClass": 0,
-                              "seatNumber": "string",
-                              "status": 0,
-                              "to": "string",
-                              "trainNumber": "string",
-                              "travelDate": "string",
-                              "travelTime": "string"
+        "boughtDate": "string",
+        "coachNumber": 0,
+        "contactsDocumentNumber": "string",
+        "contactsName": "string",
+        "differenceMoney": "string",
+        "documentType": 0,
+        "from": "string",
+        "id": '3ddae130-38c1-4e8e-abee-11d83f87561f',
+        "price": "string",
+        "seatClass": 0,
+        "seatNumber": "string",
+        "status": 0,
+        "to": "string",
+        "trainNumber": "string",
+        "travelDate": "string",
+        "travelTime": "string"
                             }
     ret = update_order(client,newOrder,BASE_URL)
     assert ret['msg'] == 'Success'
