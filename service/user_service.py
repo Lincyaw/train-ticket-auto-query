@@ -1,4 +1,4 @@
-from config import *
+from service.config import *
 
 def userService_hello(client):
     url = "/api/v1/userservice/users/hello"

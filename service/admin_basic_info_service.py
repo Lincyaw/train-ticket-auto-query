@@ -1,137 +1,270 @@
-from config import *
+from typing import List
+import requests
+from service.common import *
+from dataclasses import dataclass, asdict
 
 
-def get_welcome(client, headers):
-    url = '/api/v1/adminbasicservice/welcome'
-    response = client.request(BASE_URL + url, headers=headers)
-    return response.text if response else None
+@dataclass
+class ContactBody(DataclassInstance):
+    id: str
+    accountId: str
+    name: str
+    documentType: int
+    documentNumber: str
+    phoneNumber: str
 
 
-def get_contacts(client, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/contacts'
-    response = client.request(BASE_URL + url, headers=headers)
-    return response.json() if response else None
+@dataclass
+class Contact(DataclassInstance):
+    status: int
+    msg: str
+    data: List
 
 
-def delete_contact(client, contact_id, headers):
-    url = f'/api/v1/adminbasicservice/adminbasic/contacts/{contact_id}'
-    response = client.request(BASE_URL + url, method='DELETE', headers=headers)
-    return response.json() if response else None
+@dataclass
+class StationBody(DataclassInstance):
+    id: str
+    name: str
+    stayTime: int
 
 
-def update_contact(client, contact, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/contacts'
-    response = client.request(BASE_URL + url, method='PUT', json=contact,
-                              headers=headers)
-    return response.json() if response else None
+@dataclass
+class Station(DataclassInstance):
+    status: int
+    msg: str
+    data: List
 
 
-def create_contact(client, contact, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/contacts'
-    response = client.request(BASE_URL + url, method='POST', json=contact,
-                              headers=headers)
-    return response.json() if response else None
+@dataclass
+class TrainTypeBody(DataclassInstance):
+    id: str
+    name: str
+    economyClass: int
+    confortClass: int
+    averageSpeed: int
 
 
-def get_stations(client, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/stations'
-    response = client.request(BASE_URL + url, headers=headers)
-    return response.json() if response else None
+@dataclass
+class TrainType(DataclassInstance):
+    status: int
+    msg: str
+    data: List
 
 
-def delete_station(client, station_id, headers):
-    url = f'/api/v1/adminbasicservice/adminbasic/stations/{station_id}'
-    response = client.request(BASE_URL + url, method='DELETE', headers=headers)
-    return response.json() if response else None
+@dataclass
+class ConfigBody(DataclassInstance):
+    name: str
+    value: str
+    description: str
 
 
-def update_station(client, station, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/stations'
-    response = client.request(BASE_URL + url, method='PUT', json=station,
-                              headers=headers)
-    return response.json() if response else None
+@dataclass
+class Config(DataclassInstance):
+    status: int
+    msg: str
+    data: List
 
 
-def create_station(client, station, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/stations'
-    response = client.request(BASE_URL + url, method='POST', json=station,
-                              headers=headers)
-    return response.json() if response else None
+@dataclass
+class PriceInfoBody(DataclassInstance):
+    id: str
+    trainType: str
+    routeId: str
+    basicPriceRate: float
+    firstClassPriceRate: float
 
 
-def get_trains(client, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/trains'
-    response = client.request(BASE_URL + url, headers=headers)
-    return response.json() if response else None
+@dataclass
+class PriceInfo(DataclassInstance):
+    status: int
+    msg: str
+    data: List
 
 
-def delete_train(client, train_id, headers):
-    url = f'/api/v1/adminbasicservice/adminbasic/trains/{train_id}'
-    response = client.request(BASE_URL + url, method='DELETE', headers=headers)
-    return response.json() if response else None
+def adminbasic_welcome(client: requests.Session, host: str):
+    """
+    /api/v1/adminbasicservice/welcome GET
+    """
+    url = "/api/v1/adminbasicservice/welcome"
+    response = client.request(url=host + url, method='GET')
+    return response.text
 
 
-def update_train(client, train, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/trains'
-    response = client.request(BASE_URL + url, method='PUT', json=train,
-                              headers=headers)
-    return response.json() if response else None
+def get_all_contacts(client: requests.Session, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/contacts GET
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/contacts"
+    response = client.request(url=host + url, method='GET')
+    return from_dict(Contact, response.json())
 
 
-def create_train(client, train, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/trains'
-    response = client.request(BASE_URL + url, method='POST', json=train,
-                              headers=headers)
-    return response.json() if response else None
+def delete_contact(client: requests.Session, contact_id: str, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/contacts/{contactsId} DELETE
+    """
+    url = f"/api/v1/adminbasicservice/adminbasic/contacts/{contact_id}"
+    response = client.request(url=host + url, method='DELETE')
+    return response.json()
 
 
-def get_configs(client, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/configs'
-    response = client.request(BASE_URL + url, headers=headers)
-    return response.json() if response else None
+def modify_contact(client: requests.Session, contact: ContactBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/contacts PUT
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/contacts"
+    response = client.request(url=host + url, method='PUT', json=asdict(contact))
+    return response.json()
 
 
-def delete_config(client, config_name, headers):
-    url = f'/api/v1/adminbasicservice/adminbasic/configs/{config_name}'
-    response = client.request(BASE_URL + url, method='DELETE', headers=headers)
-    return response.json() if response else None
+def add_contact(client: requests.Session, contact: ContactBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/contacts POST
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/contacts"
+    response = client.request(url=host + url, method='POST', json=asdict(contact))
+    return from_dict(Contact, response.json())
 
 
-def update_config(client, config, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/configs'
-    response = client.request(BASE_URL + url, method='PUT', json=config,
-                              headers=headers)
-    return response.json() if response else None
+def get_all_stations(client: requests.Session, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/stations GET
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/stations"
+    response = client.request(url=host + url, method='GET')
+    return from_dict(Station, response.json())
 
 
-def create_config(client, config, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/configs'
-    response = client.request(BASE_URL + url, method='POST', json=config,
-                              headers=headers)
-    return response.json() if response else None
+def delete_station(client: requests.Session, station_id: str, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/stations/{id} DELETE
+    """
+    url = f"/api/v1/adminbasicservice/adminbasic/stations/{station_id}"
+    response = client.request(url=host + url, method='DELETE')
+    return response.json()
 
 
-def get_prices(client, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/prices'
-    response = client.request(BASE_URL + url, headers=headers)
-    return response.json() if response else None
+def modify_station(client: requests.Session, station: StationBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/stations PUT
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/stations"
+    response = client.request(url=host + url, method='PUT', json=asdict(station))
+    return response.json()
 
 
-def delete_price(client, price_id, headers):
-    url = f'/api/v1/adminbasicservice/adminbasic/prices/{price_id}'
-    response = client.request(BASE_URL + url, method='DELETE', headers=headers)
-    return response.json() if response else None
+def add_station(client: requests.Session, station: StationBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/stations POST
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/stations"
+    response = client.request(url=host + url, method='POST', json=asdict(station))
+    return response.json()
 
 
-def update_price(client, price, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/prices'
-    response = client.request(BASE_URL + url, method='PUT', json=price,
-                              headers=headers)
-    return response.json() if response else None
+def get_all_trains(client: requests.Session, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/trains GET
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/trains"
+    response = client.request(url=host + url, method='GET')
+    return from_dict(TrainType, response.json())
 
 
-def create_price(client, price, headers):
-    url = '/api/v1/adminbasicservice/adminbasic/prices'
-    response = client.request(BASE_URL + url, method='POST', json=price,
-                              headers=headers)
-    return response.json() if response else None
+def delete_train(client: requests.Session, train_id: str, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/trains/{id} DELETE
+    """
+    url = f"/api/v1/adminbasicservice/adminbasic/trains/{train_id}"
+    response = client.request(url=host + url, method='DELETE')
+    return response.json()
+
+
+def modify_train(client: requests.Session, train_type: TrainTypeBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/trains PUT
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/trains"
+    response = client.request(url=host + url, method='PUT', json=asdict(train_type))
+    return response.json()
+
+
+def add_train(client: requests.Session, train_type: TrainTypeBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/trains POST
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/trains"
+    response = client.request(url=host + url, method='POST', json=asdict(train_type))
+    return response.json()
+
+
+def get_all_configs(client: requests.Session, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/configs GET
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/configs"
+    response = client.request(url=host + url, method='GET')
+    return from_dict(Config, response.json())
+
+
+def delete_config(client: requests.Session, config_name: str, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/configs/{name} DELETE
+    """
+    url = f"/api/v1/adminbasicservice/adminbasic/configs/{config_name}"
+    response = client.request(url=host + url, method='DELETE')
+    return response.json()
+
+
+def modify_config(client: requests.Session, config: ConfigBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/configs PUT
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/configs"
+    response = client.request(url=host + url, method='PUT', json=asdict(config))
+    return response.json()
+
+
+def add_config(client: requests.Session, config: ConfigBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/configs POST
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/configs"
+    response = client.request(url=host + url, method='POST', json=asdict(config))
+    return response.json()
+
+
+def get_all_prices(client: requests.Session, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/prices GET
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/prices"
+    response = client.request(url=host + url, method='GET')
+    return from_dict(PriceInfo, response.json())
+
+
+def delete_price(client: requests.Session, price_id: str, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/prices
+    """
+    url = f"/api/v1/adminbasicservice/adminbasic/prices/{price_id}"
+    response = client.request(url=host + url, method='DELETE')
+    return response.json()
+
+
+def modify_price(client: requests.Session, price_info: PriceInfoBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/prices PUT
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/prices"
+    response = client.request(url=host + url, method='PUT', json=asdict(price_info))
+    return response.json()
+
+
+def add_price(client: requests.Session, price_info: PriceInfoBody, host: str):
+    """
+    /api/v1/adminbasicservice/adminbasic/prices POST
+    """
+    url = "/api/v1/adminbasicservice/adminbasic/prices"
+    response = client.request(url=host + url, method='POST', json=asdict(price_info))
+    return response.json()
