@@ -23,7 +23,7 @@ def delete_travel(client: requests.Session,tripId:str,host: str):
     return response.json()
 
 def get_welcome(client: requests.Session,host: str):
-    url = "/api/v1/admintracelservice/welcome"
+    url = "/api/v1/admintravelservice/welcome"
     response=client.request(url=host+url, method='GET',
                             headers={"Accept": "*/*"})
     return response.text

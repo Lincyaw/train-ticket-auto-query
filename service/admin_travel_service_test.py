@@ -30,30 +30,29 @@ def test_get_all_travels():
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
     result = get_all_travels(client, BASE_URL)
-    print(result['data'])
     assert result['msg'] == 'Travel Service Admin Query All Travel Success'
 
-def test_add_order():
+def test_add_travel():
     client = requests.Session()
     basic_auth_dto=DtoLoginUser(username='admin',
                                 password='222222', verificationCode="123")
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
 
-    newOrder = {
-            "endTime": "string",
-            "loginId": "string",
-            "routeId": "string",
-            "startStationName": "string",
-            "startTime": "string",
-            "stationsName": "string",
-            "terminalStationName": "string",
-            "trainTypeName": "string",
-            "tripId": "string"
-        }
+    newTravel = {
+        "endTime": "string",
+        "loginId": "string",
+        "routeId": "92708982-77af-4318-be25-57ccb0ff69ad",
+        "startStationName": "nanjing",
+        "startTime": "string",
+        "stationsName": "shanghai",
+        "terminalStationName": "shanghai",
+        "trainTypeName": "GaoTieOne",
+        "tripId": "G1236"
+    }
 
-    ret = add_travel(client,newOrder,BASE_URL)
-    assert ret['msg'] == 'Success'
+    ret = add_travel(client,newTravel,BASE_URL)
+    assert ret['msg'] == '[Admin add new travel]'
 
 def test_update_travel():
     client = requests.Session()
@@ -62,37 +61,29 @@ def test_update_travel():
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
     newTravel = {
-                              "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                              "boughtDate": "string",
-                              "coachNumber": 0,
-                              "contactsDocumentNumber": "string",
-                              "contactsName": "string",
-                              "differenceMoney": "string",
-                              "documentType": 0,
-                              "from": "string",
-                              "id": '76f5c408-0b16-48a4-9eb5-38693c7cd823',
-                              "price": "string",
-                              "seatClass": 0,
-                              "seatNumber": "string",
-                              "status": 0,
-                              "to": "string",
-                              "trainNumber": "string",
-                              "travelDate": "string",
-                              "travelTime": "string"
-                            }
+        "endTime": "string",
+        "loginId": "string",
+        "routeId": "92708982-77af-4318-be25-57ccb0ff69ad",
+        "startStationName": "nanjing",
+        "startTime": "string",
+        "stationsName": "shanghai",
+        "terminalStationName": "shanghai",
+        "trainTypeName": "GaoTieOne",
+        "tripId": "G1236"
+    }
+
     ret = update_travel(client,newTravel,BASE_URL)
-    assert ret['msg'] == 'Success'
+    assert ret['msg'] == 'Update trip:G1236'
 
 def test_delete_travel():
-    travelId='76f5c408-0b16-48a4-9eb5-38693c7cd823'
+    travelId='G1236'
     client=requests.Session()
     basic_auth_dto=DtoLoginUser(username='admin',
                                 password='222222', verificationCode="123")
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
     ret = delete_travel(client,travelId,BASE_URL)
-    print(ret)
-    assert ret['msg'] == 'Delete Order Success'
+    assert ret['msg'] == 'Delete trip:G1236.'
 
 def test_get_welcome():
     client=requests.Session()
@@ -101,4 +92,34 @@ def test_get_welcome():
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
     ret = get_welcome(client,BASE_URL)
-    assert ret == 'Welcome to [Admin Order Service] !'
+    assert ret == 'Welcome to [ AdminTravel Service ] !'
+
+def test_whole_chain():
+    # welcome
+    client = requests.Session()
+    basic_auth_dto = DtoLoginUser(username='admin',
+                                  password='222222', verificationCode="123")
+    token = users_login(client, basic_auth_dto, headers, BASE_URL)
+    client.headers.update({'Authorization': f'Bearer {token}'})
+    ret = get_welcome(client, BASE_URL)
+    assert ret == 'Welcome to [ AdminTravel Service ] !'
+    # add
+    newTravel = {
+        "endTime": "string",
+        "loginId": "string",
+        "routeId": "92708982-77af-4318-be25-57ccb0ff69ad",
+        "startStationName": "nanjing",
+        "startTime": "string",
+        "stationsName": "shanghai",
+        "terminalStationName": "shanghai",
+        "trainTypeName": "GaoTieOne",
+        "tripId": "G1236"
+    }
+    ret = add_travel(client, newTravel, BASE_URL)
+    assert ret['msg'] == '[Admin add new travel]'
+    # update
+    ret = update_travel(client, newTravel, BASE_URL)
+    assert ret['msg'] == 'Update trip:G1236'
+    # delete
+    ret = delete_travel(client, 'G1236', BASE_URL)
+    assert ret['msg'] == 'Delete trip:G1236.'
