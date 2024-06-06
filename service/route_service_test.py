@@ -25,10 +25,10 @@ class TestRouteService(unittest.TestCase):
 
     def test_create_and_modify_route(self):
         route = RouteInfo(id=fake.uuid4(),
-                          startStation=fake.city(),
-                          endStation=fake.city(),
-                          stationList=[fake.city() for _ in range(3)],
-                          distanceList=[fake.pyfloat(min_value=0, max_value=100) for _ in range(3)])
+                          startStation="shanghai",
+                          endStation="taiyuan",
+                          stationList="shanghai,The Chinese University of Hong Kong, SZ ,shijiazhuang,taiyuan",
+                          distanceList="0,350,1000,1300")
         response = create_and_modify_route(self.client, route, self.host, self.headers)
         self.assertIsInstance(response, dict)
 
@@ -40,7 +40,7 @@ class TestRouteService(unittest.TestCase):
     def test_query_by_id(self):
         route_id = fake.uuid4()
         response = query_by_id(self.client, route_id, self.host, self.headers)
-        self.assertIsInstance(response, dict)
+        self.assertIsInstance(response, Route)
 
     def test_query_by_ids(self):
         route_ids = [fake.uuid4() for _ in range(3)]
@@ -52,10 +52,10 @@ class TestRouteService(unittest.TestCase):
         self.assertIsInstance(routes, Route)
 
     def test_query_by_start_and_terminal(self):
-        start = fake.city()
-        end = fake.city()
+        start = "shanghai"
+        end = "taiyuan"
         response = query_by_start_and_terminal(self.client, start, end, self.host, self.headers)
-        self.assertIsInstance(response, dict)
+        self.assertIsInstance(response, Route)
 
     def test_end2end(self):
         # Query all routes
@@ -64,10 +64,10 @@ class TestRouteService(unittest.TestCase):
 
         # Create a new route
         new_route = RouteInfo(id=fake.uuid4(),
-                              startStation=fake.city(),
-                              endStation=fake.city(),
-                              stationList=[fake.city() for _ in range(3)],
-                              distanceList=[fake.pyfloat(min_value=0, max_value=100) for _ in range(3)])
+                              startStation="shanghai",
+                              endStation="taiyuan",
+                              stationList="shanghai,The Chinese University of Hong Kong, SZ ,shijiazhuang,taiyuan",
+                              distanceList="0,350,1000,1300")
         create_response = create_and_modify_route(self.client, new_route, self.host, self.headers)
         print("Create route response:", create_response)
 

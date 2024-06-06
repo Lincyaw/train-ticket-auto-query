@@ -6,8 +6,8 @@ from uuid import UUID
 
 @dataclass
 class Contacts(DataclassInstance):
-    id: UUID
-    accountId: UUID
+    id: str
+    accountId: str
     name: str
     documentType: int
     documentNumber: str
@@ -29,7 +29,7 @@ def get_all_contacts(client: requests.Session, host: str, headers: dict):
     """
     url = "/api/v1/contactservice/contacts"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(Contacts, response.json())
+    return response.json()
 
 
 def create_new_contacts(client: requests.Session, contacts: Contacts, host: str, headers: dict):
@@ -50,11 +50,11 @@ def create_new_contacts_admin(client: requests.Session, contacts: Contacts, host
     return response.json()
 
 
-def delete_contacts(client: requests.Session, contacts_id: UUID, host: str, headers: dict):
+def delete_contacts(client: requests.Session, contactsId: str, host: str, headers: dict):
     """
     /api/v1/contactservice/contacts/{contactsId} DELETE
     """
-    url = f"/api/v1/contactservice/contacts/{contacts_id}"
+    url = f"/api/v1/contactservice/contacts/{contactsId}"
     response = client.request(url=host + url, method='DELETE', headers=headers)
     return response.json()
 
@@ -68,19 +68,19 @@ def modify_contacts(client: requests.Session, contacts: Contacts, host: str, hea
     return response.json()
 
 
-def find_contacts_by_account_id(client: requests.Session, account_id: UUID, host: str, headers: dict):
+def find_contacts_by_account_id(client: requests.Session, accountId: str, host: str, headers: dict):
     """
     /api/v1/contactservice/contacts/account/{accountId} GET
     """
-    url = f"/api/v1/contactservice/contacts/account/{account_id}"
+    url = f"/api/v1/contactservice/contacts/account/{accountId}"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(Contacts, response.json())
+    return response.json()
 
 
-def get_contacts_by_contacts_id(client: requests.Session, contacts_id: UUID, host: str, headers: dict):
+def get_contacts_by_contacts_id(client: requests.Session, id: str, host: str, headers: dict):
     """
     /api/v1/contactservice/contacts/{id} GET
     """
-    url = f"/api/v1/contactservice/contacts/{contacts_id}"
+    url = f"/api/v1/contactservice/contacts/{id}"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(Contacts, response.json())
+    return response.json()

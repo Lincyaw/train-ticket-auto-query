@@ -14,6 +14,14 @@ class Order(DataclassInstance):
 @dataclass
 class OrderInfo(DataclassInstance):
     loginId: str
+    travelDateStart: str
+    travelDateEnd: str
+    boughtDateStart: str
+    boughtDateEnd: str
+    state: int
+    enableTravelDateQuery: bool
+    enableBoughtDateQuery: bool
+    enableStateQuery: bool
 
 
 @dataclass

@@ -6,11 +6,12 @@ from dataclasses import dataclass, asdict
 
 @dataclass
 class RouteInfo(DataclassInstance):
-    id: str
+    loginId: str
     startStation: str
     endStation: str
-    stationList: List[str]
-    distanceList: List[float]
+    stationList: str
+    distanceList: str
+    id: str
 
 
 @dataclass

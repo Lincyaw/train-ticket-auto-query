@@ -11,8 +11,8 @@ class TestFoodDeliveryService(unittest.TestCase):
     def setUp(self):
         self.client = requests.Session()
         self.host = BASE_URL
-        basic_auth_dto = DtoLoginUser(username='fdse_microservice',
-                                      password='111111', verificationCode="123")
+        basic_auth_dto = DtoLoginUser(username='admin',
+                                      password='222222', verificationCode="123")
         token = users_login(self.client, basic_auth_dto, headers, BASE_URL)
         self.headers = {'Authorization': f'Bearer {token}'}
 
@@ -24,7 +24,19 @@ class TestFoodDeliveryService(unittest.TestCase):
         self.assertIsInstance(response, str)
 
     def test_create_food_delivery_order(self):
-        fd = FoodDeliveryOrder()
+        food_1 = Food(foodName="chicken meal",
+                      price=float(10.00))
+        food_2 = Food(foodName="spaghetti",
+                      price=float(10.00))
+        fd = FoodDeliveryOrder(id=str(fake.uuid4()),
+                               stationFoodStoreId=str(fake.uuid4()),
+                               foodList=[food_1, food_2],
+                               tripId=str(fake.uuid4()),
+                               seatNo=int(777),
+                               createdTime=str("2024-06-05 06:26:00"),
+                               deliveryTime=str("2024-06-05 20:37:00"),
+                               deliveryFee=float(5.00))
+
         response = create_food_delivery_order(self.client, fd, self.host, self.headers)
         self.assertIsInstance(response, FoodDeliveryOrder)
 

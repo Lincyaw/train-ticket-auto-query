@@ -29,7 +29,7 @@ def find_by_route_id_and_train_type(client: requests.Session, route_id: str, tra
     return response.json()
 
 
-def find_by_route_ids_and_train_types(client: requests.Session, rids_and_tts: List[str], host: str, headers: dict):
+def find_by_route_ids_and_train_types(client: requests.Session, rids_and_tts: List, host: str, headers: dict):
     """
     /api/v1/priceservice/prices/byRouteIdsAndTrainTypes POST
     """

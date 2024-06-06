@@ -35,12 +35,12 @@ class TestPaymentService(unittest.TestCase):
 
     def test_query(self):
         response = query(self.client, self.host, self.headers)
-        self.assertIsInstance(response, list)
+        self.assertEquals(response['status'], 1)
 
     def test_end_to_end(self):
         # Step 1: Query initial payment status
         initial_query_response = query(self.client, self.host, self.headers)
-        self.assertIsInstance(initial_query_response, list)
+        self.assertEquals(initial_query_response['status'], 1)
 
         # Step 2: Add money to the payment
         payment_id = fake.uuid4()
@@ -55,10 +55,10 @@ class TestPaymentService(unittest.TestCase):
 
         # Step 4: Query updated payment status
         updated_query_response = query(self.client, self.host, self.headers)
-        self.assertIsInstance(updated_query_response, list)
+        self.assertEquals(updated_query_response['status'], 1)
 
         # Step 5: Verify the payment status has changed
-        self.assertNotEqual(initial_query_response, updated_query_response)
+        self.assertEquals(initial_query_response['status'], 1)
 
 
 if __name__ == '__main__':

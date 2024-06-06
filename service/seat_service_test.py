@@ -24,30 +24,48 @@ class TestSeatService(unittest.TestCase):
         self.assertIsInstance(response, str)
 
     def test_distribute_seat(self):
-        seat_request = Seat(travelDate=fake.date(), trainNumber=fake.word(), seatType=fake.word())
+        seat_request = Seat(travelDate="2024-06-06 14:16:00",
+                            trainNumber="777",
+                            destStation="shenzhen",
+                            seatType=7,
+                            totalNum=8,
+                            stations=['sz', 'suzhou', 'hongkong'])
         response = distribute_seat(self.client, seat_request, self.host, self.headers)
         self.assertIsInstance(response, dict)
 
     def test_get_left_ticket_of_interval(self):
-        seat_request = Seat(travelDate=fake.date(), trainNumber=fake.word(), seatType=fake.word())
+        seat_request = Seat(travelDate="2024-06-06 14:16:00",
+                            trainNumber="777",
+                            destStation="shenzhen",
+                            seatType=7,
+                            totalNum=8,
+                            stations=['sz', 'suzhou', 'hongkong'])
         response = get_left_ticket_of_interval(self.client, seat_request, self.host, self.headers)
         self.assertIsInstance(response, dict)
 
     def test_end_to_end(self):
         # Step 1: Distribute seat
-        distribute_request = Seat(travelDate=fake.date(), trainNumber=fake.word(), seatType=fake.word())
+        distribute_request = Seat(travelDate="2024-06-06 14:16:00",
+                            trainNumber="777",
+                            destStation="shenzhen",
+                            seatType=7,
+                            totalNum=8,
+                            stations=['sz', 'suzhou', 'hongkong'])
         distribute_response = distribute_seat(self.client, distribute_request, self.host, self.headers)
         self.assertIsInstance(distribute_response, dict)
 
         # Step 2: Get left ticket of interval
-        left_ticket_request = Seat(travelDate=distribute_request.travelDate,
-                                   trainNumber=distribute_request.trainNumber,
-                                   seatType=distribute_request.seatType)
+        left_ticket_request = Seat(travelDate="2024-06-06 14:16:00",
+                            trainNumber="777",
+                            destStation="shenzhen",
+                            seatType=7,
+                            totalNum=8,
+                            stations=['sz', 'suzhou', 'hongkong'])
         left_ticket_response = get_left_ticket_of_interval(self.client, left_ticket_request, self.host, self.headers)
         self.assertIsInstance(left_ticket_response, dict)
 
         # Step 3: Verify the left ticket count
-        self.assertGreaterEqual(left_ticket_response['count'], 0)
+        self.assertEquals(left_ticket_response['msg'], 'Get Left Ticket of Internal Success')
 
 
 if __name__ == '__main__':

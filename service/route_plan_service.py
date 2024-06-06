@@ -9,7 +9,7 @@ from datetime import datetime
 class RoutePlanInfo(DataclassInstance):
     startStation: str
     endStation: str
-    travelDate: datetime
+    travelDate: str
     num: int
 
 
@@ -17,8 +17,20 @@ class RoutePlanInfo(DataclassInstance):
 class RoutePlan(DataclassInstance):
     status: int
     msg: str
-    data: List[dict]
+    data: List[RoutePlanInfo]
 
+@dataclass
+class TripInfo(DataclassInstance):
+    startPlace: str
+    endPlace: str
+    departureTime: str
+
+
+@dataclass
+class Trip(DataclassInstance):
+    status: int
+    msg: str
+    data: List[TripInfo]
 
 def routeplan_welcome(client: requests.Session, host: str):
     """

@@ -5,11 +5,12 @@ from dataclasses import dataclass, asdict
 
 @dataclass
 class ConsignPrice(DataclassInstance):
+    id: str
     index: int
     initialWeight: float
     initialPrice: float
     withinPrice: float
-    beyondPrice: float
+    beyondPrice: float  
 
 
 def welcome(client: requests.Session, host: str, headers: dict):
@@ -27,7 +28,7 @@ def get_price_by_weight_and_region(client: requests.Session, weight: float, is_w
     """
     url = f"/api/v1/consignpriceservice/consignprice/{weight}/{is_within_region}"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(ConsignPrice, response.json())
+    return response.json()
 
 
 def get_price_info(client: requests.Session, host: str, headers: dict):
@@ -36,7 +37,7 @@ def get_price_info(client: requests.Session, host: str, headers: dict):
     """
     url = "/api/v1/consignpriceservice/consignprice/price"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(ConsignPrice, response.json())
+    return response.json()
 
 
 def get_price_config(client: requests.Session, host: str, headers: dict):
@@ -45,13 +46,13 @@ def get_price_config(client: requests.Session, host: str, headers: dict):
     """
     url = "/api/v1/consignpriceservice/consignprice/config"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(ConsignPrice, response.json())
+    return response.json()
 
 
-def modify_price_config(client: requests.Session, price_config: ConsignPrice, host: str, headers: dict):
+def modify_price_config(client: requests.Session, priceConfig: ConsignPrice, host: str, headers: dict):
     """
     /api/v1/consignpriceservice/consignprice POST
     """
     url = "/api/v1/consignpriceservice/consignprice"
-    response = client.request(url=host + url, method='POST', json=asdict(price_config), headers=headers)
+    response = client.request(url=host + url, method='POST', json=asdict(priceConfig), headers=headers)
     return response.json()

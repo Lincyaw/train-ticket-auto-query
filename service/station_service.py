@@ -7,6 +7,7 @@ from service.common import *
 class Station(DataclassInstance):
     id: str
     name: str
+    stayTime: int
 
 
 def home(client: requests.Session, host: str, headers: dict):

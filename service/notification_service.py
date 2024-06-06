@@ -5,16 +5,18 @@ from service.common import *
 
 @dataclass
 class NotifyInfo(DataclassInstance):
-    date: str
+    id: str
+    sendStatus: bool
     email: str
-    endPlace: str
-    startPlace: str
     orderNumber: str
-    price: str
+    username: str
+    startPlace: str
+    endPlace: str
+    startTime: str
+    date: str
     seatClass: str
     seatNumber: str
-    startTime: str
-    username: str
+    price: str
 
 
 def home(client: requests.Session, host: str):
@@ -26,22 +28,22 @@ def home(client: requests.Session, host: str):
     return response.text
 
 
-def test_send(client: requests.Session, host: str):
-    """
-    /api/v1/notifyservice/test_send_mq GET
-    """
-    url = "/api/v1/notifyservice/test_send_mq"
-    response = client.request(url=host + url, method='GET')
-    return response.json()
+# def test_send(client: requests.Session, host: str):
+#     """
+#     /api/v1/notifyservice/test_send_mq GET
+#     """
+#     url = "/api/v1/notifyservice/test_send_mq"
+#     response = client.request(url=host + url, method='GET')
+#     return response.json()
 
 
-def test_send_mail(client: requests.Session, host: str):
-    """
-    /api/v1/notifyservice/test_send_mail GET
-    """
-    url = "/api/v1/notifyservice/test_send_mail"
-    response = client.request(url=host + url, method='GET')
-    return response.json()
+# def test_send_mail(client: requests.Session, host: str):
+#     """
+#     /api/v1/notifyservice/test_send_mail GET
+#     """
+#     url = "/api/v1/notifyservice/test_send_mail"
+#     response = client.request(url=host + url, method='GET')
+#     return response.json()
 
 
 def preserve_success(client: requests.Session, info: NotifyInfo, host: str, headers: dict):

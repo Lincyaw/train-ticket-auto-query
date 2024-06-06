@@ -1,6 +1,6 @@
 from typing import List
 import requests
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from service.common import *
 
 
@@ -8,6 +8,9 @@ from service.common import *
 class TrainType(DataclassInstance):
     id: str
     name: str
+    economyClass: int
+    confortClass: int
+    averageSpeed: int
 
 
 def home(client: requests.Session, host: str, headers: dict):
@@ -24,7 +27,7 @@ def create(client: requests.Session, train_type: TrainType, host: str, headers: 
     /api/v1/trainservice/trains POST
     """
     url = "/api/v1/trainservice/trains"
-    response = client.request(url=host + url, method='POST', json=train_type.to_dict(), headers=headers)
+    response = client.request(url=host + url, method='POST', json=asdict(train_type), headers=headers)
     return response.json()
 
 
@@ -60,7 +63,7 @@ def update(client: requests.Session, train_type: TrainType, host: str, headers: 
     /api/v1/trainservice/trains PUT
     """
     url = "/api/v1/trainservice/trains"
-    response = client.request(url=host + url, method='PUT', json=train_type.to_dict(), headers=headers)
+    response = client.request(url=host + url, method='PUT', json=asdict(train_type), headers=headers)
     return response.json()
 
 

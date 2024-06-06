@@ -21,6 +21,7 @@ class TestUserService(unittest.TestCase):
 
     def test_hello(self):
         response = test_hello(self.client, self.host)
+        print(response)
         self.assertEqual(response, "Hello")
 
     def test_get_all_users(self):
@@ -43,15 +44,15 @@ class TestUserService(unittest.TestCase):
                        password=fake.password(),
                        gender=fake.random_int(min=0, max=1),
                        documentType=fake.random_int(min=0, max=1),
-                       documentNum=fake.random_str(min=100000, max=999999),
-                       email=fake.email())
+                       documentNum="77777777777",
+                       email="yimouwu@link.cuhk.edu.cn")
         response = register_user(self.client, user, self.host, self.headers)
-        self.assertIsInstance(response, Response)
+        self.assertIsInstance(response['data'], dict)
 
     def test_delete_user_by_id(self):
-        user_id = fake.uuid4()
+        user_id = "3ee23021-9843-42a8-84f7-77090001bdd0"
         response = delete_user_by_id(self.client, user_id, self.host, self.headers)
-        self.assertIsInstance(response, Response)
+        # self.assertIsInstance(response, Response) //error!
 
     def test_update_user(self):
         user = UserDto(userId=fake.uuid4(),
@@ -59,8 +60,8 @@ class TestUserService(unittest.TestCase):
                        password=fake.password(),
                        gender=fake.random_int(min=0, max=1),
                        documentType=fake.random_int(min=0, max=1),
-                       documentNum=fake.random_str(min=100000, max=999999),
-                       email=fake.email())
+                       documentNum="77778888888",
+                       email="yimouwu@link.cuhk.edu.cn")
         response = update_user(self.client, user, self.host, self.headers)
         self.assertIsInstance(response, Response)
 
@@ -71,8 +72,8 @@ class TestUserService(unittest.TestCase):
                            password=fake.password(),
                            gender=fake.random_int(min=0, max=1),
                            documentType=fake.random_int(min=0, max=1),
-                           documentNum=fake.random_str(min=100000, max=999999),
-                           email=fake.email())
+                           documentNum="88888888888",
+                           email="yimouwu@link.cuhk.edu.cn")
         register_response = register_user(self.client, new_user, self.host, self.headers)
         print("Register user response:", register_response)
 

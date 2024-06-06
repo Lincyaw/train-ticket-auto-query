@@ -1,8 +1,13 @@
 import requests
 from typing import List
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from service.common import *
 
+@dataclass
+class ReturnBody(DataclassInstance):
+    status: int
+    msg: str
+    data: List
 
 @dataclass
 class TripInfo(DataclassInstance):
@@ -14,14 +19,16 @@ class TripInfo(DataclassInstance):
 @dataclass
 class TripAllDetailInfo(DataclassInstance):
     tripId: str
-    from_date: str
-    to_date: str
+    travelDate: str
+    from_location: str
+    to: str
 
 
 @dataclass
 class TravelInfo(DataclassInstance):
+    loginId: str
     tripId: str
-    trainTypeId: str
+    trainTypeName: str
     routeId: str
     startStationName: str
     stationsName: str
@@ -71,7 +78,7 @@ def create_trip(client: requests.Session, travel_info: TravelInfo, host: str, he
     /api/v1/travel2service/trips POST
     """
     url = "/api/v1/travel2service/trips"
-    response = client.request(url=host + url, method='POST', json=travel_info.to_dict(), headers=headers)
+    response = client.request(url=host + url, method='POST', json=asdict(travel_info), headers=headers)
     return response.json()
 
 
@@ -81,7 +88,7 @@ def retrieve_trip(client: requests.Session, trip_id: str, host: str, headers: di
     """
     url = f"/api/v1/travel2service/trips/{trip_id}"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return response.json()
+    return from_dict(ReturnBody, response.json())
 
 
 def update_trip(client: requests.Session, travel_info: TravelInfo, host: str, headers: dict):
@@ -89,7 +96,7 @@ def update_trip(client: requests.Session, travel_info: TravelInfo, host: str, he
     /api/v1/travel2service/trips PUT
     """
     url = "/api/v1/travel2service/trips"
-    response = client.request(url=host + url, method='PUT', json=travel_info.to_dict(), headers=headers)
+    response = client.request(url=host + url, method='PUT', json=asdict(travel_info), headers=headers)
     return response.json()
 
 
@@ -107,7 +114,7 @@ def query_trip_info(client: requests.Session, trip_info: TripInfo, host: str, he
     /api/v1/travel2service/trips/left POST
     """
     url = "/api/v1/travel2service/trips/left"
-    response = client.request(url=host + url, method='POST', json=trip_info.to_dict(), headers=headers)
+    response = client.request(url=host + url, method='POST', json=asdict(trip_info), headers=headers)
     return response.json()
 
 
@@ -116,7 +123,7 @@ def get_trip_all_detail_info(client: requests.Session, gtdi: TripAllDetailInfo, 
     /api/v1/travel2service/trip_detail POST
     """
     url = "/api/v1/travel2service/trip_detail"
-    response = client.request(url=host + url, method='POST', json=gtdi.to_dict(), headers=headers)
+    response = client.request(url=host + url, method='POST', json=asdict(gtdi), headers=headers)
     return response.json()
 
 
@@ -126,7 +133,7 @@ def query_all_trips(client: requests.Session, host: str, headers: dict):
     """
     url = "/api/v1/travel2service/trips"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return response.json()
+    return from_dict(ReturnBody, response.json())
 
 
 def admin_query_all_trips(client: requests.Session, host: str, headers: dict):
@@ -135,4 +142,4 @@ def admin_query_all_trips(client: requests.Session, host: str, headers: dict):
     """
     url = "/api/v1/travel2service/admin_trip"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return response.json()
+    return from_dict(ReturnBody, response.json())

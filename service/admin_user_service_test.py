@@ -11,8 +11,8 @@ class TestAdminUserService(unittest.TestCase):
     def setUp(self):
         self.client = requests.Session()
         self.host = BASE_URL
-        basic_auth_dto = DtoLoginUser(username='fdse_microservice',
-                                      password='111111', verificationCode="123")
+        basic_auth_dto = DtoLoginUser(username='admin',
+                                      password='222222', verificationCode="123")
         token = users_login(self.client, basic_auth_dto, headers, BASE_URL)
         self.headers = {'Authorization': f'Bearer {token}'}
 

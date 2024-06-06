@@ -5,15 +5,18 @@ from service.common import *
 
 @dataclass
 class TransferTravelInfo:
-    start_station: str
-    end_station: str
+    startStation: str
+    viaStation: str
+    endStation: str
+    travelDate: str
+    trainType: str
 
 
 @dataclass
 class TripInfo:
-    start_place: str
-    end_place: str
-    departure_time: str
+    startPlace: str
+    endPlace: str
+    departureTime: str
 
 
 @dataclass
@@ -38,7 +41,7 @@ def get_transfer_result(client: requests.Session, info: TransferTravelInfo, host
     """
     url = "/api/v1/travelplanservice/travelPlan/transferResult"
     response = client.request(url=host + url, method='POST', headers=headers, json=asdict(info))
-    return from_dict(TravelPlanResult, response.json())
+    return response.json()
 
 
 def get_by_cheapest(client: requests.Session, query_info: TripInfo, host: str, headers: dict):
@@ -47,7 +50,7 @@ def get_by_cheapest(client: requests.Session, query_info: TripInfo, host: str, h
     """
     url = "/api/v1/travelplanservice/travelPlan/cheapest"
     response = client.request(url=host + url, method='POST', headers=headers, json=asdict(query_info))
-    return from_dict(TravelPlanResult, response.json())
+    return response.json()
 
 
 def get_by_quickest(client: requests.Session, query_info: TripInfo, host: str, headers: dict):
@@ -56,7 +59,7 @@ def get_by_quickest(client: requests.Session, query_info: TripInfo, host: str, h
     """
     url = "/api/v1/travelplanservice/travelPlan/quickest"
     response = client.request(url=host + url, method='POST', headers=headers, json=asdict(query_info))
-    return from_dict(TravelPlanResult, response.json())
+    return response.json()
 
 
 def get_by_min_station(client: requests.Session, query_info: TripInfo, host: str, headers: dict):
@@ -65,4 +68,4 @@ def get_by_min_station(client: requests.Session, query_info: TripInfo, host: str
     """
     url = "/api/v1/travelplanservice/travelPlan/minStation"
     response = client.request(url=host + url, method='POST', headers=headers, json=asdict(query_info))
-    return from_dict(TravelPlanResult, response.json())
+    return response.json()

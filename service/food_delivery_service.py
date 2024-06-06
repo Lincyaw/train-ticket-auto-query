@@ -1,12 +1,24 @@
+from typing import List
 import requests
 from dataclasses import dataclass, asdict
 from service.common import *
 from uuid import UUID
 
+@dataclass
+class Food(DataclassInstance):
+    foodName: str
+    price: float
 
 @dataclass
 class FoodDeliveryOrder(DataclassInstance):
-    pass
+    id: str
+    stationFoodStoreId: str
+    foodList: List[Food]
+    tripId: str
+    seatNo: int
+    createdTime: str
+    deliveryTime: str
+    deliveryFee: float
 
 
 @dataclass
@@ -39,7 +51,7 @@ def create_food_delivery_order(client: requests.Session, fd: FoodDeliveryOrder, 
     """
     url = "/api/v1/fooddeliveryservice/orders"
     response = client.request(url=host + url, method='POST', json=asdict(fd), headers=headers)
-    return from_dict(FoodDeliveryOrder, response.json())
+    return response.json()
 
 
 def delete_food_delivery_order(client: requests.Session, order_id: UUID, host: str, headers: dict):
