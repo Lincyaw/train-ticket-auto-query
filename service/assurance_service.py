@@ -7,8 +7,8 @@ from uuid import UUID
 
 @dataclass
 class Assurance(DataclassInstance):
-    id: UUID
-    orderId: UUID
+    id: str
+    orderId: str
     typeIndex: int
 
 
@@ -16,7 +16,7 @@ class Assurance(DataclassInstance):
 class Response(DataclassInstance):
     status: int
     msg: str
-    data: List[Assurance] = field(default_factory=list)
+    data: List
 
 
 def welcome(client: requests.Session, host: str, headers: dict):
@@ -52,7 +52,7 @@ def delete_assurance_by_id(client: requests.Session, assurance_id: UUID, host: s
     """
     url = f"/api/v1/assuranceservice/assurances/assuranceid/{assurance_id}"
     response = client.request(url=host + url, method='DELETE', headers=headers)
-    return from_dict(Response, response.json())
+    return response.json()
 
 
 def delete_assurance_by_order_id(client: requests.Session, order_id: UUID, host: str, headers: dict):
@@ -64,20 +64,20 @@ def delete_assurance_by_order_id(client: requests.Session, order_id: UUID, host:
     return response.json()
 
 
-def modify_assurance(client: requests.Session, assurance_id: UUID, order_id: UUID, type_index: int, host: str, headers: dict):
+def modify_assurance(client: requests.Session, assuranceId: str, orderId: str, typeIndex: int, host: str, headers: dict):
     """
     /api/v1/assuranceservice/assurances/{assuranceId}/{orderId}/{typeIndex} PATCH
     """
-    url = f"/api/v1/assuranceservice/assurances/{assurance_id}/{order_id}/{type_index}"
+    url = f"/api/v1/assuranceservice/assurances/{assuranceId}/{orderId}/{typeIndex}"
     response = client.request(url=host + url, method='PATCH', headers=headers)
-    return from_dict(Response, response.json())
+    return response.json()
 
 
-def create_new_assurance(client: requests.Session, type_index: int, order_id: UUID, host: str, headers: dict):
+def create_new_assurance(client: requests.Session, typeIndex: int, orderId: str, host: str, headers: dict):
     """
     /api/v1/assuranceservice/assurances/{typeIndex}/{orderId} GET
     """
-    url = f"/api/v1/assuranceservice/assurances/{type_index}/{order_id}"
+    url = f"/api/v1/assuranceservice/assurances/{typeIndex}/{orderId}"
     response = client.request(url=host + url, method='GET', headers=headers)
     return from_dict(Response, response.json())
 

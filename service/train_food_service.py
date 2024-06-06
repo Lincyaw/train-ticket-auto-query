@@ -1,14 +1,14 @@
 import requests
 from dataclasses import dataclass
 from service.common import *
+from typing import  List
 
 
 @dataclass
 class TrainFood(DataclassInstance):
     id: str
     tripId: str
-    foodName: str
-    price: float
+    foodList: List
 
 
 def home(client: requests.Session, host: str):

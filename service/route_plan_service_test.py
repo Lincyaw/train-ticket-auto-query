@@ -25,45 +25,45 @@ class TestRoutePlanService(unittest.TestCase):
         self.assertIsInstance(response, str)
 
     def test_get_cheapest_routes(self):
-        info = RoutePlanInfo(startStation=fake.city(),
-                             endStation=fake.city(),
-                             travelDate=datetime.now().strftime("%Y-%m-%d"),
-                             num=fake.random_int(min=1, max=10))
+        info = RoutePlanInfo(startStation="shanghai",
+                             endStation="taiyuan",
+                             travelDate="5/31/2024",
+                             num=777)
         response = get_cheapest_routes(self.client, info, self.host, self.headers)
-        self.assertIsInstance(response, RoutePlan)
+        self.assertIsInstance(response, dict)
 
     def test_get_quickest_routes(self):
-        info = RoutePlanInfo(startStation=fake.city(),
-                             endStation=fake.city(),
-                             travelDate=datetime.now().strftime("%Y-%m-%d"),
-                             num=fake.random_int(min=1, max=10))
+        info = RoutePlanInfo(startStation="shanghai",
+                             endStation="taiyuan",
+                             travelDate="5/31/2024",
+                             num=666)
         response = get_quickest_routes(self.client, info, self.host, self.headers)
-        self.assertIsInstance(response, RoutePlan)
+        self.assertIsInstance(response, dict)
 
     def test_get_min_stop_stations(self):
-        info = RoutePlanInfo(startStation=fake.city(),
-                             endStation=fake.city(),
-                             travelDate=datetime.now().strftime("%Y-%m-%d"),
-                             num=fake.random_int(min=1, max=10))
+        info = RoutePlanInfo(startStation="shanghai",
+                             endStation="taiyuan",
+                             travelDate="5/31/2024",
+                             num=666)
         response = get_min_stop_stations(self.client, info, self.host, self.headers)
-        self.assertIsInstance(response, RoutePlan)
+        self.assertIsInstance(response, dict)
 
     def test_end2end(self):
-        info = RoutePlanInfo(startStation=fake.city(),
-                             endStation=fake.city(),
-                             travelDate=datetime.now().strftime("%Y-%m-%d"),
-                             num=fake.random_int(min=1, max=10))
+        info = RoutePlanInfo(startStation="shanghai",
+                             endStation="taiyuan",
+                             travelDate="5/31/2024",
+                             num=444)
 
         cheapest_routes = get_cheapest_routes(self.client, info, self.host, self.headers)
-        self.assertIsInstance(cheapest_routes, RoutePlan)
+        self.assertIsInstance(cheapest_routes, dict)
         print("Cheapest Routes:", cheapest_routes)
 
         quickest_routes = get_quickest_routes(self.client, info, self.host, self.headers)
-        self.assertIsInstance(quickest_routes, RoutePlan)
+        self.assertIsInstance(quickest_routes, dict)
         print("Quickest Routes:", quickest_routes)
 
         min_stop_stations = get_min_stop_stations(self.client, info, self.host, self.headers)
-        self.assertIsInstance(min_stop_stations, RoutePlan)
+        self.assertIsInstance(min_stop_stations, dict)
         print("Min Stop Stations:", min_stop_stations)
 
 

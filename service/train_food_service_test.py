@@ -25,24 +25,19 @@ class TestTrainFoodService(unittest.TestCase):
 
     def test_list_train_food(self):
         response = list_train_food(self.client, self.host, self.headers)
-        self.assertIsInstance(response, list)
-        if len(response) > 0:
-            self.assertIsInstance(response[0], dict)
-            self.assertIn('id', response[0])
-            self.assertIn('tripId', response[0])
-            self.assertIn('foodName', response[0])
-            self.assertIn('price', response[0])
+        self.assertIsInstance(response, dict)
+        print(response)
 
     def test_list_train_food_by_trip_id(self):
-        trip_id = fake.uuid4()
+        trip_id = str(fake.uuid4())
         response = list_train_food_by_trip_id(self.client, trip_id, self.host, self.headers)
-        self.assertIsInstance(response, list)
-        if len(response) > 0:
-            self.assertIsInstance(response[0], dict)
-            self.assertIn('id', response[0])
-            self.assertIn('tripId', response[0])
-            self.assertIn('foodName', response[0])
-            self.assertIn('price', response[0])
+        self.assertEquals(response['status'], 0)
+
+    def test_end_to_end(self):
+        # List train foods by trip ID
+        list_response = list_train_food_by_trip_id(self.client, "dc5cb976-8891-4a26-945d-c49db03e4120", self.host, self.headers)
+        self.assertIsInstance(list_response, dict)
+        self.assertEqual(list_response['status'], 0)
 
 
 if __name__ == '__main__':

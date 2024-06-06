@@ -1,3 +1,4 @@
+from typing import List
 import requests
 from dataclasses import dataclass, asdict
 from service.common import *
@@ -7,6 +8,14 @@ from service.common import *
 class SecurityConfig(DataclassInstance):
     name: str
     id: str
+    value: str
+    description: str
+
+@dataclass
+class Return(DataclassInstance):
+    status: str
+    msg: str
+    data: List
 
 
 def home(client: requests.Session, host: str, headers: dict):
@@ -24,7 +33,7 @@ def find_all_security_config(client: requests.Session, host: str, headers: dict)
     """
     url = "/api/v1/securityservice/securityConfigs"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return response.json()
+    return from_dict(Return, response.json())
 
 
 def add_new_security_config(client: requests.Session, info: SecurityConfig, host: str, headers: dict):

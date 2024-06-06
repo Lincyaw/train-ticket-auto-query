@@ -5,11 +5,12 @@ from service.common import *
 
 @dataclass
 class RebookInfo(DataclassInstance):
+    loginId: str
     orderId: str
     oldTripId: str
     tripId: str
+    seatType: int
     date: str
-    seatType: str
 
 
 def home(client: requests.Session, host: str):

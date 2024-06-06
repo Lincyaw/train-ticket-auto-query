@@ -9,8 +9,8 @@ class RouteInfo(DataclassInstance):
     id: str
     startStation: str
     endStation: str
-    stationList: List[str]
-    distanceList: List[float]
+    stationList: str
+    distanceList: str
 
 
 @dataclass
@@ -34,7 +34,8 @@ def create_and_modify_route(client: requests.Session, route: RouteInfo, host: st
     /api/v1/routeservice/routes POST
     """
     url = "/api/v1/routeservice/routes"
-    response = client.request(url=host + url, method='POST', json=asdict(route), headers=headers)
+    response = client.request(url=host + url, method='POST', json=asdict(route),
+                              headers=headers)
     return response.json()
 
 

@@ -15,8 +15,25 @@ class Delivery(DataclassInstance):
 
 @dataclass
 class FoodOrder(DataclassInstance):
-    pass
+    id: str
+    orderId: str
+    foodType: int
+    stationName: str
+    storeName: str
+    foodName: str
+    price: float
 
+@dataclass
+class QueryAllMessage(DataclassInstance):
+    status: int
+    msg: str
+    data: List
+
+@dataclass
+class FoodOrderReturn(DataclassInstance):
+    status: int
+    msg: str
+    data: List
 
 def home(client: requests.Session, host: str):
     """
@@ -27,13 +44,13 @@ def home(client: requests.Session, host: str):
     return response.text
 
 
-def test_send_delivery(client: requests.Session, delivery: Delivery, host: str):
-    """
-    /api/v1/foodservice/test_send_delivery GET
-    """
-    url = "/api/v1/foodservice/test_send_delivery"
-    response = client.request(url=host + url, method='GET', json=asdict(delivery))
-    return response.json()
+# def test_send_delivery(client: requests.Session, host: str):
+#     """
+#     /api/v1/foodservice/test_send_delivery GET
+#     """
+#     url = "/api/v1/foodservice/test_send_delivery"
+#     response = client.request(url=host + url, method='GET', json=())
+#     return response.json()
 
 
 def find_all_food_order(client: requests.Session, host: str, headers: dict):
@@ -42,7 +59,7 @@ def find_all_food_order(client: requests.Session, host: str, headers: dict):
     """
     url = "/api/v1/foodservice/orders"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return response.json()
+    return from_dict(QueryAllMessage, response.json())
 
 
 def create_food_order(client: requests.Session, food_order: FoodOrder, host: str, headers: dict):
@@ -51,7 +68,7 @@ def create_food_order(client: requests.Session, food_order: FoodOrder, host: str
     """
     url = "/api/v1/foodservice/orders"
     response = client.request(url=host + url, method='POST', json=asdict(food_order), headers=headers)
-    return from_dict(FoodOrder, response.json())
+    return response.json()
 
 
 def create_food_batches(client: requests.Session, food_order_list: List[FoodOrder], host: str, headers: dict):
@@ -69,7 +86,7 @@ def update_food_order(client: requests.Session, food_order: FoodOrder, host: str
     """
     url = "/api/v1/foodservice/orders"
     response = client.request(url=host + url, method='PUT', json=asdict(food_order), headers=headers)
-    return from_dict(FoodOrder, response.json())
+    return response.json()
 
 
 def delete_food_order(client: requests.Session, order_id: UUID, host: str, headers: dict):
@@ -81,13 +98,13 @@ def delete_food_order(client: requests.Session, order_id: UUID, host: str, heade
     return response.json()
 
 
-def find_food_order_by_order_id(client: requests.Session, order_id: UUID, host: str, headers: dict):
+def find_food_order_by_order_id(client: requests.Session, orderId: str, host: str, headers: dict):
     """
     /api/v1/foodservice/orders/{orderId} GET
     """
-    url = f"/api/v1/foodservice/orders/{order_id}"
+    url = f"/api/v1/foodservice/orders/{orderId}"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(FoodOrder, response.json())
+    return response.json()
 
 
 def get_all_food(client: requests.Session, date: str, start_station: str, end_station: str, trip_id: str, host: str, headers: dict):

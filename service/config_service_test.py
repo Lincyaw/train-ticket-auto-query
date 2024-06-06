@@ -25,25 +25,25 @@ class TestConfigService(unittest.TestCase):
 
     def test_query_all(self):
         response = query_all(self.client, self.host, self.headers)
-        self.assertIsInstance(response, list)
+        self.assertIsInstance(response, dict)
 
     def test_create_config(self):
-        config = Config(name=fake.word(), value=fake.word(), description=fake.sentence())
-        response = create_config(self.client, config, self.host, self.headers)
+        info = Config(name="moumouta", value="777", description="bravo!")
+        response = create_config(self.client, info, self.host, self.headers)
         self.assertIsInstance(response, dict)
 
     def test_update_config(self):
-        config = Config(name=fake.word(), value=fake.word(), description=fake.sentence())
-        response = update_config(self.client, config, self.host, self.headers)
+        info = Config(name="moumouta", value="666", description="bravo!")
+        response = update_config(self.client, info, self.host, self.headers)
         self.assertIsInstance(response, dict)
 
     def test_delete_config(self):
-        config_name = fake.word()
+        config_name = "moumouta"
         response = delete_config(self.client, config_name, self.host, self.headers)
         self.assertIsInstance(response, dict)
 
     def test_retrieve_config(self):
-        config_name = fake.word()
+        config_name = "moumouta"
         response = retrieve_config(self.client, config_name, self.host, self.headers)
         self.assertIsInstance(response, dict)
 

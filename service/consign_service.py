@@ -1,24 +1,37 @@
 import requests
 from service.common import *
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
+from dataclasses_json import dataclass_json, LetterCase, config
 from datetime import datetime
 from uuid import UUID
 
 
 @dataclass
 class Consign(DataclassInstance):
-    accountId: UUID
-    handleDate: datetime
-    targetDate: datetime
-    from_: str
+    id: str
+    orderId: str
+    accountId: str
+    handleDate: str
+    targetDate: str
+    from_location: str = field(metadata=config(field_name="from"))
+    # from_location: str
     to: str
     consignee: str
     phone: str
     weight: float
-    id: UUID
-    orderId: UUID
-    consignee_idcard: UUID
-    price: float
+    isWithin: bool
+    # private String id;        //id主键改成String类型的 自定义生成策略
+    # private String orderId;   //这次托运关联订单
+    # private String accountId;  //这次托运关联的账户
+    #
+    # private String handleDate;
+    # private String targetDate;
+    # private String from;
+    # private String to;
+    # private String consignee;
+    # private String phone;
+    # private double weight;
+    # private boolean isWithin;
 
 
 def welcome(client: requests.Session, host: str, headers: dict):
@@ -48,22 +61,24 @@ def update_consign(client: requests.Session, consign: Consign, host: str, header
     return response.json()
 
 
-def find_by_account_id(client: requests.Session, account_id: UUID, host: str, headers: dict):
+def find_by_account_id(client: requests.Session, id: str, host: str, headers: dict):
     """
     /api/v1/consignservice/consigns/account/{id} GET
     """
-    url = f"/api/v1/consignservice/consigns/account/{account_id}"
+    url = f"/api/v1/consignservice/consigns/account/{id}"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(Consign, response.json())
+    # return from_dict(Consign, response.json())
+    return response.json()
 
 
-def find_by_order_id(client: requests.Session, order_id: UUID, host: str, headers: dict):
+def find_by_order_id(client: requests.Session, id: str, host: str, headers: dict):
     """
     /api/v1/consignservice/consigns/order/{id} GET
     """
-    url = f"/api/v1/consignservice/consigns/order/{order_id}"
+    url = f"/api/v1/consignservice/consigns/order/{id}"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(Consign, response.json())
+    # return from_dict(Consign, response.json())
+    return response.json()
 
 
 def find_by_consignee(client: requests.Session, consignee: str, host: str, headers: dict):
@@ -72,4 +87,5 @@ def find_by_consignee(client: requests.Session, consignee: str, host: str, heade
     """
     url = f"/api/v1/consignservice/consigns/{consignee}"
     response = client.request(url=host + url, method='GET', headers=headers)
-    return from_dict(Consign, response.json())
+    # return from_dict(Consign, response.json())
+    return response.json()

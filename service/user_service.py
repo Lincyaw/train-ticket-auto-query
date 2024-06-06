@@ -19,7 +19,7 @@ class UserDto(DataclassInstance):
 class Response(DataclassInstance):
     status: int
     msg: str
-    data: List[UserDto]
+    data: dict
 
 
 # 新增dataclass
@@ -53,50 +53,50 @@ class UserInfoDto:
 
 # @dataclass
 # class Response:
-#     status: bool
+#     status: int
 #     msg: str
 #     data: dict
 
 @dataclass
 class GetAllUserResult:
-    status: bool
+    status: int
     msg: str
     data: List[UserInfoDto]
 
 
 @dataclass
 class GetUserByUserNameResult:
-    status: bool
+    status: int
     msg: str
-    data: UserAllDto
+    data: List
 
 
 @dataclass
 class GetUserByUserIdResult:
-    status: bool
+    status: int
     msg: str
-    data: UserAllDto
+    data: List
 
 
 @dataclass
 class RegisterUserResult:
-    status: bool
+    status: int
     msg: str
-    data: None
+    data: List
 
 
 @dataclass
 class DeleteUserResult:
-    status: bool
+    status: int
     msg: str
-    data: str
+    data: List
 
 
 @dataclass
 class UpdateUserResult:
-    status: bool
+    status: int
     msg: str
-    data: str
+    data: List
 
 
 #

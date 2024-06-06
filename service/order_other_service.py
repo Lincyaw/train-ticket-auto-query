@@ -1,6 +1,6 @@
 import requests
 from typing import List, Dict
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from requests.structures import CaseInsensitiveDict
 from service.common import *
 
@@ -41,32 +41,32 @@ def home(client: requests.Session, host: str):
 def get_sold_tickets(client: requests.Session, host: str, seat_request: Seat, headers: CaseInsensitiveDict[str]) -> \
 List[str]:
     url = f"{host}/api/v1/orderOtherService/orderOther/tickets"
-    response = client.request(method="POST", url=url, json=seat_request.to_dict(), headers=headers)
+    response = client.request(method="POST", url=url, json=asdict(seat_request), headers=headers)
     return response.json()
 
 
 def create_new_order(client: requests.Session, host: str, order: Order, headers: CaseInsensitiveDict[str]) -> bool:
     url = f"{host}/api/v1/orderOtherService/orderOther"
-    response = client.request(method="POST", url=url, json=order.to_dict(), headers=headers)
+    response = client.request(method="POST", url=url, json=asdict(order), headers=headers)
     return response.json()
 
 
 def add_new_order(client: requests.Session, host: str, order: Order, headers: CaseInsensitiveDict[str]) -> bool:
     url = f"{host}/api/v1/orderOtherService/orderOther/admin"
-    response = client.request(method="POST", url=url, json=order.to_dict(), headers=headers)
+    response = client.request(method="POST", url=url, json=asdict(order), headers=headers)
     return response.json()
 
 
 def query_orders(client: requests.Session, host: str, qi: QueryInfo, headers: CaseInsensitiveDict[str]) -> List[Order]:
     url = f"{host}/api/v1/orderOtherService/orderOther/query"
-    response = client.request(method="POST", url=url, json=qi.to_dict(), headers=headers)
+    response = client.request(method="POST", url=url, json=asdict(qi), headers=headers)
     return [Order.from_dict(item) for item in response.json()]
 
 
 def query_orders_for_refresh(client: requests.Session, host: str, qi: QueryInfo, headers: CaseInsensitiveDict[str]) -> \
 List[Order]:
     url = f"{host}/api/v1/orderOtherService/orderOther/refresh"
-    response = client.request(method="POST", url=url, json=qi.to_dict(), headers=headers)
+    response = client.request(method="POST", url=url, json=asdict(qi), headers=headers)
     return [Order.from_dict(item) for item in response.json()]
 
 
@@ -111,13 +111,13 @@ def security_info_check(client: requests.Session, host: str, check_date: str, ac
 
 def save_order_info(client: requests.Session, host: str, order_info: Order, headers: CaseInsensitiveDict[str]) -> bool:
     url = f"{host}/api/v1/orderOtherService/orderOther"
-    response = client.request(method="PUT", url=url, json=order_info.to_dict(), headers=headers)
+    response = client.request(method="PUT", url=url, json=asdict(order_info), headers=headers)
     return response.json()
 
 
 def update_order(client: requests.Session, host: str, order: Order, headers: CaseInsensitiveDict[str]) -> bool:
     url = f"{host}/api/v1/orderOtherService/orderOther/admin"
-    response = client.request(method="PUT", url=url, json=order.to_dict(), headers=headers)
+    response = client.request(method="PUT", url=url, json=asdict(order), headers=headers)
     return response.json()
 
 

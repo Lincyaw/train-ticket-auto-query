@@ -2,12 +2,14 @@ import requests
 from dataclasses import dataclass, asdict
 from service.common import *
 from uuid import UUID
+from typing import  List
 
 
 @dataclass
 class ExecuteServiceResult(DataclassInstance):
-    message: str
-    status: bool
+    data:List
+    msg: str
+    status: int
 
 
 def welcome(client: requests.Session, host: str, headers: dict):

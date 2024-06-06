@@ -1,3 +1,4 @@
+from typing import List
 import requests
 from dataclasses import dataclass, asdict
 from service.common import *
@@ -7,7 +8,10 @@ from service.common import *
 class Seat(DataclassInstance):
     travelDate: str
     trainNumber: str
-    seatType: str
+    destStation: str
+    seatType: int
+    totalNum: int
+    stations: List
 
 
 def home(client: requests.Session, host: str):
