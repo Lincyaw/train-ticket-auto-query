@@ -29,7 +29,8 @@ class TestRoutePlanService(unittest.TestCase):
                              endStation="taiyuan",
                              travelDate="5/31/2024",
                              num=777)
-        response = get_cheapest_routes(self.client, info, self.host, self.headers)
+        response = get_cheapest_routes(self.client, info, self.host,
+                                       self.headers)
         self.assertIsInstance(response, dict)
 
     def test_get_quickest_routes(self):
@@ -37,7 +38,8 @@ class TestRoutePlanService(unittest.TestCase):
                              endStation="taiyuan",
                              travelDate="5/31/2024",
                              num=666)
-        response = get_quickest_routes(self.client, info, self.host, self.headers)
+        response = get_quickest_routes(self.client, info, self.host,
+                                       self.headers)
         self.assertIsInstance(response, dict)
 
     def test_get_min_stop_stations(self):
@@ -45,8 +47,10 @@ class TestRoutePlanService(unittest.TestCase):
                              endStation="taiyuan",
                              travelDate="5/31/2024",
                              num=666)
-        response = get_min_stop_stations(self.client, info, self.host, self.headers)
+        response = get_min_stop_stations(self.client, info, self.host,
+                                         self.headers)
         self.assertIsInstance(response, dict)
+        assert response['status'] == 200
 
     def test_end2end(self):
         info = RoutePlanInfo(startStation="shanghai",
@@ -54,15 +58,18 @@ class TestRoutePlanService(unittest.TestCase):
                              travelDate="5/31/2024",
                              num=444)
 
-        cheapest_routes = get_cheapest_routes(self.client, info, self.host, self.headers)
+        cheapest_routes = get_cheapest_routes(self.client, info, self.host,
+                                              self.headers)
         self.assertIsInstance(cheapest_routes, dict)
         print("Cheapest Routes:", cheapest_routes)
 
-        quickest_routes = get_quickest_routes(self.client, info, self.host, self.headers)
+        quickest_routes = get_quickest_routes(self.client, info, self.host,
+                                              self.headers)
         self.assertIsInstance(quickest_routes, dict)
         print("Quickest Routes:", quickest_routes)
 
-        min_stop_stations = get_min_stop_stations(self.client, info, self.host, self.headers)
+        min_stop_stations = get_min_stop_stations(self.client, info, self.host,
+                                                  self.headers)
         self.assertIsInstance(min_stop_stations, dict)
         print("Min Stop Stations:", min_stop_stations)
 

@@ -17,7 +17,7 @@ class TravelInfo:
     endTime: str
 
 @dataclass
-class ReturnBody:
+class ReturnBody(DataclassInstance):
     status: int
     msg: str
     data: List

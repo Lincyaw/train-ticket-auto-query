@@ -1,4 +1,4 @@
-BASE_URL = "http://10.10.10.220:31948"
+BASE_URL = "http://10.10.10.220:30604"
 headers = {
     'Proxy-Connection': 'keep-alive',
     'Accept': 'application/json',

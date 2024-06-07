@@ -22,20 +22,24 @@ class TestConsignPriceService(unittest.TestCase):
     def test_welcome(self):
         response = welcome(self.client, self.host, self.headers)
         self.assertIsInstance(response, str)
+        print(response)
 
     def test_get_price_by_weight_and_region(self):
         weight = fake.pyfloat(positive=True)
         is_within_region = fake.pybool()
         response = get_price_by_weight_and_region(self.client, weight, is_within_region, self.host, self.headers)
         self.assertIsInstance(response, dict)
+        print(response)
 
     def test_get_price_info(self):
         response = get_price_info(self.client, self.host, self.headers)
         self.assertIsInstance(response, dict)
+        print(response)
 
     def test_get_price_config(self):
         response = get_price_config(self.client, self.host, self.headers)
         self.assertIsInstance(response, dict)
+        print(response)
 
     def test_modify_price_config(self):
         priceConfig = ConsignPrice("59668612-f6be-487b-a133-36ebd6864dd8",
@@ -46,6 +50,7 @@ class TestConsignPriceService(unittest.TestCase):
                                    beyondPrice=44.44)
         response = modify_price_config(self.client, priceConfig, self.host, self.headers)
         self.assertIsInstance(response, dict)
+        print(response)
 
     def test_consign_price_service_workflow(self):
         # Test welcome

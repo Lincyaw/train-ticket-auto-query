@@ -3,10 +3,12 @@ import requests
 from service.common import *
 from dataclasses import dataclass, field, asdict
 
+
 @dataclass
 class TripId(DataclassInstance):
     type: Type
     number: str
+
 
 @dataclass
 class Trip(DataclassInstance):
@@ -20,6 +22,7 @@ class Trip(DataclassInstance):
     startTime: str
     endTime: str
 
+
 @dataclass
 class Travel(DataclassInstance):
     trip: Trip
@@ -27,16 +30,16 @@ class Travel(DataclassInstance):
     endPlace: str
     departureTime: str
 
-    @staticmethod
-    def from_dict(obj: Any) -> 'Travel':
-        return Travel(
-            tripId=str(obj.get("tripId")),
-            trainTypeId=str(obj.get("trainTypeId")),
-            startStationName=str(obj.get("startStationName")),
-            startTime=str(obj.get("startTime")),
-            endStationName=str(obj.get("endStationName")),
-            arriveTime=str(obj.get("arriveTime"))
-        )
+    # @staticmethod
+    # def from_dict(obj: Any) -> Travel:
+    #     return Travel(
+    #         tripId=str(obj.get("tripId")),
+    #         trainTypeId=str(obj.get("trainTypeId")),
+    #         startStationName=str(obj.get("startStationName")),
+    #         startTime=str(obj.get("startTime")),
+    #         endStationName=str(obj.get("endStationName")),
+    #         arriveTime=str(obj.get("arriveTime"))
+    #     )
 
 
 @dataclass
@@ -55,26 +58,31 @@ def welcome(client: requests.Session, host: str, headers: dict):
     return response.text
 
 
-def query_for_travel(client: requests.Session, info: Travel, host: str, headers: dict):
+def query_for_travel(client: requests.Session, info: Travel, host: str,
+                     headers: dict):
     """
     /api/v1/basicservice/basic/travel POST
     """
     url = "/api/v1/basicservice/basic/travel"
-    response = client.request(url=host + url, method='POST', json=asdict(info), headers=headers)
-    return response.json()
-
-
-def query_for_travels(client: requests.Session, travels: List[Travel], host: str, headers: dict):
-    """
-    /api/v1/basicservice/basic/travels POST
-    """
-    url = "/api/v1/basicservice/basic/travels"
-    response = client.request(url=host + url, method='POST', json=[asdict(travel) for travel in travels],
+    response = client.request(url=host + url, method='POST', json=asdict(info),
                               headers=headers)
     return response.json()
 
 
-def query_for_station_id(client: requests.Session, station_name: str, host: str, headers: dict):
+def query_for_travels(client: requests.Session, travels: List[Travel],
+                      host: str, headers: dict):
+    """
+    /api/v1/basicservice/basic/travels POST
+    """
+    url = "/api/v1/basicservice/basic/travels"
+    response = client.request(url=host + url, method='POST',
+                              json=[asdict(travel) for travel in travels],
+                              headers=headers)
+    return response.json()
+
+
+def query_for_station_id(client: requests.Session, station_name: str, host: str,
+                         headers: dict):
     """
     /api/v1/basicservice/basic/{stationName} GET
     """

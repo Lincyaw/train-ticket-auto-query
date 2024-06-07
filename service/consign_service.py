@@ -1,7 +1,7 @@
 import requests
 from service.common import *
 from dataclasses import dataclass, asdict, field
-from dataclasses_json import dataclass_json, LetterCase, config
+from dataclasses_json import config
 from datetime import datetime
 from uuid import UUID
 
@@ -34,58 +34,60 @@ class Consign(DataclassInstance):
     # private boolean isWithin;
 
 
-def welcome(client: requests.Session, host: str, headers: dict):
+def welcome(client: requests.Session, host: str):
     """
     /api/v1/consignservice/welcome GET
     """
     url = "/api/v1/consignservice/welcome"
-    response = client.request(url=host + url, method='GET', headers=headers)
+    response = client.request(url=host + url, method='GET')
     return response.text
 
 
-def insert_consign(client: requests.Session, consign: Consign, host: str, headers: dict):
+def insert_consign(client: requests.Session, consign: Consign, host: str):
     """
     /api/v1/consignservice/consigns POST
     """
     url = "/api/v1/consignservice/consigns"
-    response = client.request(url=host + url, method='POST', json=asdict(consign), headers=headers)
+    response = client.request(url=host + url, method='POST',
+                              json=asdict(consign))
     return response.json()
 
 
-def update_consign(client: requests.Session, consign: Consign, host: str, headers: dict):
+def update_consign(client: requests.Session, consign: Consign, host: str):
     """
     /api/v1/consignservice/consigns PUT
     """
     url = "/api/v1/consignservice/consigns"
-    response = client.request(url=host + url, method='PUT', json=asdict(consign), headers=headers)
+    response = client.request(url=host + url, method='PUT',
+                              json=asdict(consign))
     return response.json()
 
 
-def find_by_account_id(client: requests.Session, id: str, host: str, headers: dict):
+def find_by_account_id(client: requests.Session, id: str, host: str):
     """
     /api/v1/consignservice/consigns/account/{id} GET
     """
     url = f"/api/v1/consignservice/consigns/account/{id}"
-    response = client.request(url=host + url, method='GET', headers=headers)
+    response = client.request(url=host + url, method='GET')
     # return from_dict(Consign, response.json())
     return response.json()
 
 
-def find_by_order_id(client: requests.Session, id: str, host: str, headers: dict):
+def find_by_order_id(client: requests.Session, id: str, host: str):
     """
     /api/v1/consignservice/consigns/order/{id} GET
     """
     url = f"/api/v1/consignservice/consigns/order/{id}"
-    response = client.request(url=host + url, method='GET', headers=headers)
+    response = client.request(url=host + url, method='GET')
     # return from_dict(Consign, response.json())
     return response.json()
 
 
-def find_by_consignee(client: requests.Session, consignee: str, host: str, headers: dict):
+def find_by_consignee(client: requests.Session, consignee: str, host: str):
     """
     /api/v1/consignservice/consigns/{consignee} GET
     """
     url = f"/api/v1/consignservice/consigns/{consignee}"
-    response = client.request(url=host + url, method='GET', headers=headers)
+    response = client.request(url=host + url, method='GET')
     # return from_dict(Consign, response.json())
     return response.json()
