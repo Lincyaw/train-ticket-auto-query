@@ -1,13 +1,14 @@
 import requests
 import uuid
 
+from service import DataclassInstance
 from service.admin_order_service import *
 from dataclasses import dataclass, asdict
 from service.auth_service import users_login
 
-BASE_URL = "http://10.10.10.220:31948"
+BASE_URL="http://10.10.10.220:30604"
 
-headers = {
+headers={
     'Proxy-Connection': 'keep-alive',
     'Accept': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
@@ -17,11 +18,13 @@ headers = {
     'Connection': 'keep-alive',
 }
 
+
 @dataclass
 class DtoLoginUser(DataclassInstance):
     password: str
     username: str
     verificationCode: str
+
 
 def test_get_all_orders():
     client=requests.Session()
@@ -29,66 +32,69 @@ def test_get_all_orders():
                                 password='222222', verificationCode="123")
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
-    result = get_all_orders(client, BASE_URL)
-    print(len(result['data']))
-    assert result['msg'] == 'Get the orders successfully!'
+    result=get_all_orders(client, BASE_URL)
+    print(result['data'])
+    assert result['msg']=='Get the orders successfully!'
+
 
 def test_add_order():
-    client = requests.Session()
+    client=requests.Session()
     basic_auth_dto=DtoLoginUser(username='admin',
                                 password='222222', verificationCode="123")
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
 
-    newOrder = {
-                              "accountId": str(uuid.uuid4()),
-                              "boughtDate": "string",
-                              "coachNumber": 0,
-                              "contactsDocumentNumber": "string",
-                              "contactsName": "string",
-                              "differenceMoney": "string",
-                              "documentType": 0,
-                              "from": "string",
-                              "id": str(uuid.uuid4()),
-                              "price": "string",
-                              "seatClass": 0,
-                              "seatNumber": "string",
-                              "status": 0,
-                              "to": "string",
-                              "trainNumber": "string",
-                              "travelDate": "string",
-                              "travelTime": "string"
-                            }
-    ret = add_order(client,newOrder,BASE_URL)
-    assert ret['msg'] == 'Success'
+    newOrder={
+        "accountId": str(uuid.uuid4()),
+        "boughtDate": "string",
+        "coachNumber": 0,
+        "contactsDocumentNumber": "string",
+        "contactsName": "string",
+        "differenceMoney": "string",
+        "documentType": 0,
+        "from": "string",
+        "id": "string",
+        "price": "string",
+        "seatClass": 0,
+        "seatNumber": "string",
+        "status": 0,
+        "to": "string",
+        "trainNumber": "string",
+        "travelDate": "string",
+        "travelTime": "string"
+    }
+    ret=add_order(client, newOrder, BASE_URL)
+    assert ret['msg']=='Success'
+
 
 def test_update_order():
-    client = requests.Session()
+    client=requests.Session()
     basic_auth_dto=DtoLoginUser(username='admin',
                                 password='222222', verificationCode="123")
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
-    newOrder = {
-                              "accountId": "string",
-                              "boughtDate": "string",
-                              "coachNumber": 0,
-                              "contactsDocumentNumber": "string",
-                              "contactsName": "string",
-                              "differenceMoney": "string",
-                              "documentType": 0,
-                              "from": "string",
-                              "id": '3ddae130-38c1-4e8e-abee-11d83f87561f',
-                              "price": "string",
-                              "seatClass": 0,
-                              "seatNumber": "string",
-                              "status": 0,
-                              "to": "string",
-                              "trainNumber": "string",
-                              "travelDate": "string",
-                              "travelTime": "string"
-                            }
-    ret = update_order(client,newOrder,BASE_URL)
-    assert ret['msg'] == 'Success'
+    newOrder={
+        "accountId": "6d8ae887-9c9b-4db9-8dff-e96781f35012",
+        "boughtDate": "string",
+        "coachNumber": 0,
+        "contactsDocumentNumber": "string",
+        "contactsName": "string",
+        "differenceMoney": "string",
+        "documentType": 0,
+        "from": "string",
+        "id": 'ab39e23b-529f-4c89-b68e-a4e5556fecf3',
+        "price": "string",
+        "seatClass": 0,
+        "seatNumber": "string",
+        "status": 1,
+        "to": "string",
+        "trainNumber": "G123",
+        "travelDate": "string",
+        "travelTime": "string"
+    }
+    ret=update_order(client, newOrder, BASE_URL)
+    assert ret['msg']=='Admin Update Order Success'
+
 
 def test_delete_order():
     orderID='e1cfc963-4324-47ee-9846-f0362df2861d'
@@ -98,8 +104,9 @@ def test_delete_order():
                                 password='222222', verificationCode="123")
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
-    ret = delete_order(client,orderID,trainNumber,BASE_URL)
-    assert ret['msg'] == 'Delete Order Success'
+    ret=delete_order(client, orderID, trainNumber, BASE_URL)
+    assert ret['msg']=='Delete Order Success'
+
 
 def test_get_welcome():
     client=requests.Session()
@@ -107,8 +114,9 @@ def test_get_welcome():
                                 password='222222', verificationCode="123")
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
-    ret = get_welcome(client,BASE_URL)
-    assert ret == 'Welcome to [Admin Order Service] !'
+    ret=get_welcome(client, BASE_URL)
+    assert ret=='Welcome to [Admin Order Service] !'
+
 
 def test_whole_chain():
     client=requests.Session()
@@ -117,33 +125,32 @@ def test_whole_chain():
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
 
-    newOrderId = str(uuid.uuid4())
+    newOrder={
+        "accountId": "accountId123456789",
+        "boughtDate": "string",
+        "coachNumber": 0,
+        "contactsDocumentNumber": "string",
+        "contactsName": "string",
+        "differenceMoney": "string",
+        "documentType": 0,
+        "from": "string",
+        "price": "string",
+        "seatClass": 0,
+        "seatNumber": "string",
+        "status": 1,
+        "to": "string",
+        "trainNumber": "G123",
+        "travelDate": "string",
+        "travelTime": "string"
+    }
 
-    newOrder = {
-                              "accountId": str(uuid.uuid4()),
-                              "boughtDate": "string",
-                              "coachNumber": 0,
-                              "contactsDocumentNumber": "string",
-                              "contactsName": "string",
-                              "differenceMoney": "string",
-                              "documentType": 0,
-                              "from": "string",
-                              "id": newOrderId,
-                              "price": "string",
-                              "seatClass": 0,
-                              "seatNumber": "string",
-                              "status": 0,
-                              "to": "string",
-                              "trainNumber": "U23",
-                              "travelDate": "string",
-                              "travelTime": "string"
-                            }
-
-    ret = get_welcome(client,BASE_URL)
-    assert ret == 'Welcome to [Admin Order Service] !'
-    ret = add_order(client,newOrder,BASE_URL)
-    assert ret['msg'] == 'Success'
-    ret = update_order(client,newOrder,BASE_URL)
+    ret=get_welcome(client, BASE_URL)
+    assert ret=='Welcome to [Admin Order Service] !'
+    ret=add_order(client, newOrder, BASE_URL)
+    assert ret['msg']=='Add new Order Success'
+    newOrder['id'] = ret['data']['id']
+    print(newOrder['id'])
+    ret=update_order(client, newOrder, BASE_URL)
     assert ret['msg']=='Success'
-    ret = delete_order(client,newOrderId,'U23',BASE_URL)
-    assert ret['msg'] == 'Delete Order Success'
+    ret=delete_order(client, ret['data']['id'], 'G123', BASE_URL)
+    assert ret['msg']=='Delete Order Success'
