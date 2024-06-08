@@ -1,6 +1,5 @@
 import requests
 
-
 def find_all_orders(client: requests.Session, host: str):
     url="/api/v1/orderservice/order"
     response=client.request(url=host+url, method='GET',

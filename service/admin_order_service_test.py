@@ -32,11 +32,10 @@ def test_get_all_orders():
                                 password='222222', verificationCode="123")
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
-    result=get_all_orders(client, BASE_URL)
+    result = get_all_orders(client, BASE_URL)
     print(result['data'])
-    assert result['msg']=='Get the orders successfully!'
-
-
+    assert result['msg'] == 'Get the orders successfully!'
+    
 def test_add_order():
     client=requests.Session()
     basic_auth_dto=DtoLoginUser(username='admin',
@@ -44,28 +43,28 @@ def test_add_order():
     token=users_login(client, basic_auth_dto, headers, BASE_URL)
     client.headers.update({'Authorization': f'Bearer {token}'})
 
-    newOrder={
-        "accountId": str(uuid.uuid4()),
-        "boughtDate": "string",
-        "coachNumber": 0,
-        "contactsDocumentNumber": "string",
-        "contactsName": "string",
-        "differenceMoney": "string",
-        "documentType": 0,
-        "from": "string",
-        "id": "string",
-        "price": "string",
-        "seatClass": 0,
-        "seatNumber": "string",
-        "status": 0,
-        "to": "string",
-        "trainNumber": "string",
-        "travelDate": "string",
-        "travelTime": "string"
-    }
-    ret=add_order(client, newOrder, BASE_URL)
-    assert ret['msg']=='Success'
 
+    newOrder = {
+                              "accountId": str(uuid.uuid4()),
+                              "boughtDate": "string",
+                              "coachNumber": 0,
+                              "contactsDocumentNumber": "string",
+                              "contactsName": "string",
+                              "differenceMoney": "string",
+                              "documentType": 0,
+                              "from": "beijing",
+                              "id": str(uuid.uuid4()),
+                              "price": "string",
+                              "seatClass": 0,
+                              "seatNumber": "string",
+                              "status": 0,
+                              "to": "shanghai",
+                              "trainNumber": "string",
+                              "travelDate": "string",
+                              "travelTime": "string"
+                            }
+    ret = add_order(client,newOrder,BASE_URL)
+    assert ret['msg'] == 'Success'
 
 def test_update_order():
     client=requests.Session()
@@ -94,7 +93,6 @@ def test_update_order():
     }
     ret=update_order(client, newOrder, BASE_URL)
     assert ret['msg']=='Admin Update Order Success'
-
 
 def test_delete_order():
     orderID='e1cfc963-4324-47ee-9846-f0362df2861d'
