@@ -1,183 +1,270 @@
-import unittest
+import uuid
+
+import requests
+
+from service import DataclassInstance
 from service.order_service import *
-from service.auth_service import DtoLoginUser, users_login
-from service.test_utils import BASE_URL, headers
-from faker import Faker
+from dataclasses import dataclass
+from service.auth_service import users_login
 
-fake = Faker()
+BASE_URL="http://10.10.10.220:30604"
+
+headers={
+    'Proxy-Connection': 'keep-alive',
+    'Accept': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
+    'Content-Type': 'application/json',
+    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    'Connection': 'keep-alive',
+}
 
 
-class TestOrderService(unittest.TestCase):
-    def setUp(self):
-        self.client = requests.Session()
-        self.host = BASE_URL
-        basic_auth_dto = DtoLoginUser(username='admin',
-                                      password='222222', verificationCode="123")
-        token = users_login(self.client, basic_auth_dto, headers, BASE_URL)
-        self.headers = {'Authorization': f'Bearer {token}'}
+@dataclass
+class DtoLoginUser(DataclassInstance):
+    password: str
+    username: str
+    verificationCode: str
 
-    def tearDown(self):
-        self.client.close()
 
-    def test_home(self):
-        response = home(self.client, self.host)
-        self.assertIsInstance(response, str)
+@dataclass
+class DtoLoginUser(DataclassInstance):
+    password: str
+    username: str
+    verificationCode: str
 
-    def test_get_sold_tickets(self):
-        seat_request = Seat(travelDate=fake.date())
-        response = get_sold_tickets(self.client, seat_request, self.host, self.headers)
-        self.assertIsInstance(response, dict)
 
-    def test_create_new_order(self):
-        order = Order(
-            id=fake.uuid4(),
-            from_=fake.city(),
-            to=fake.city(),
-            travelDate=fake.date()
-        )
-        response = create_new_order(self.client, order, self.host, self.headers)
-        self.assertIsInstance(response, dict)
+def test_get_all_orders():
+    client=requests.Session()
+    result=find_all_orders(client, BASE_URL)
+    print(result['data'])
+    assert result['msg']=='Success.'
 
-    def test_add_new_order(self):
-        order = Order(
-            id=fake.uuid4(),
-            from_=fake.city(),
-            to=fake.city(),
-            travelDate=fake.date()
-        )
-        response = add_new_order(self.client, order, self.host, self.headers)
-        self.assertIsInstance(response, dict)
 
-    def test_query_orders(self):
-        qi = OrderInfo(loginId=str(fake.uuid4()),
-                       travelDateStart="2024-06-05 19:26:00",
-                       travelDateEnd="2024-06-05 19:236:00",
-                       boughtDateStart="2024-06-05 19:46:00",
-                       boughtDateEnd="2024-06-06 19:26:00",
-                       state=1,
-                       enableTravelDateQuery=True,
-                       enableBoughtDateQuery=True,
-                       enableStateQuery=True)
-        response = query_orders(self.client, qi, self.host, self.headers)
-        self.assertEquals(response['status'], 1)
+def test_create_new_order():
+    client=requests.Session()
+    basic_auth_dto=DtoLoginUser(username='admin',
+                                password='222222', verificationCode="123")
+    token=users_login(client, basic_auth_dto, headers, BASE_URL)
+    client.headers.update({'Authorization': f'Bearer {token}'})
 
-    def test_query_orders_for_refresh(self):
-        qi = OrderInfo(loginId=str(fake.uuid4()),
-                       travelDateStart="2024-06-05 19:26:00",
-                       travelDateEnd="2024-06-05 19:236:00",
-                       boughtDateStart="2024-06-05 19:46:00",
-                       boughtDateEnd="2024-06-06 19:26:00",
-                       state=1,
-                       enableTravelDateQuery=True,
-                       enableBoughtDateQuery=True,
-                       enableStateQuery=True)
-        response = query_orders_for_refresh(self.client, qi, self.host, self.headers)
-        self.assertEquals(response['status'], 1)
+    newOrder={
+        "accountId": str(uuid.uuid4()),
+        "boughtDate": "string",
+        "coachNumber": 0,
+        "contactsDocumentNumber": "string",
+        "contactsName": "string",
+        "differenceMoney": "string",
+        "documentType": 0,
+        "from": "string",
+        "id": str(uuid.uuid4()),
+        "price": "string",
+        "seatClass": 0,
+        "seatNumber": "string",
+        "status": 0,
+        "to": "string",
+        "trainNumber": "string",
+        "travelDate": "string",
+        "travelTime": "string"
+    }
+    ret=create_new_order(client, newOrder, BASE_URL)
+    assert ret['msg']=='Success'
 
-    def test_calculate_sold_ticket(self):
-        travel_date = "2024-06-06 10:48:00"
-        train_number = "123456"
-        response = calculate_sold_ticket(self.client, travel_date, train_number, self.host, self.headers)
-        self.assertIsInstance(response, dict)
 
-    def test_get_order_price(self):
-        order_id = str(fake.uuid4())
-        response = get_order_price(self.client, order_id, self.host, self.headers)
-        self.assertIsInstance(response, dict)
+def test_save_order_info():
+    client=requests.Session()
+    basic_auth_dto=DtoLoginUser(username='admin',
+                                password='222222', verificationCode="123")
+    token=users_login(client, basic_auth_dto, headers, BASE_URL)
+    client.headers.update({'Authorization': f'Bearer {token}'})
+    newOrder={
+        "accountId": "string",
+        "boughtDate": "string",
+        "coachNumber": 0,
+        "contactsDocumentNumber": "string",
+        "contactsName": "string",
+        "differenceMoney": "string",
+        "documentType": 0,
+        "from": "string",
+        "id": '3ef1a6da-faa9-4591-8546-386c0925b6a9',
+        "price": "string",
+        "seatClass": 0,
+        "seatNumber": "string",
+        "status": 0,
+        "to": "string",
+        "trainNumber": "string",
+        "travelDate": "string",
+        "travelTime": "string"
+    }
+    ret=save_order_info(client, newOrder, BASE_URL)
+    assert ret['msg']=='Success'
 
-    def test_pay_order(self):
-        order_id = str(fake.uuid4())
-        response = pay_order(self.client, order_id, self.host, self.headers)
-        self.assertIsInstance(response, dict)
 
-    def test_get_order_by_id(self):
-        order_id = str(fake.uuid4())
-        response = get_order_by_id(self.client, order_id, self.host, self.headers)
-        self.assertIsInstance(response, dict)
+def test_add_create_new_order():
+    client=requests.Session()
+    basic_auth_dto=DtoLoginUser(username='admin',
+                                password='222222', verificationCode="123")
+    token=users_login(client, basic_auth_dto, headers, BASE_URL)
+    client.headers.update({'Authorization': f'Bearer {token}'})
 
-    def test_modify_order(self):
-        order_id = str(fake.uuid4())
-        status = int(fake.random_int(min=0, max=2))
-        response = modify_order(self.client, order_id, status, self.host, self.headers)
-        self.assertIsInstance(response, dict)
+    newOrder={
+        "accountId": str(uuid.uuid4()),
+        "boughtDate": "string",
+        "coachNumber": 0,
+        "contactsDocumentNumber": "string",
+        "contactsName": "string",
+        "differenceMoney": "string",
+        "documentType": 0,
+        "from": "string",
+        "id": "string",
+        "price": "string",
+        "seatClass": 0,
+        "seatNumber": "string",
+        "status": 0,
+        "to": "string",
+        "trainNumber": "string",
+        "travelDate": "string",
+        "travelTime": "string"
+    }
+    ret=add_create_new_order(client, newOrder, BASE_URL)
+    assert ret['msg']=='Add new Order Success'
 
-    def test_security_info_check(self):
-        check_date = fake.date()
-        account_id = fake.uuid4()
-        response = security_info_check(self.client, check_date, account_id, self.host, self.headers)
-        self.assertIsInstance(response, dict)
 
-    def test_save_order_info(self):
-        order_info = Order(
-            id=str(fake.uuid4()),
-            from_="shanghai",
-            to="suzhou",
-            travelDate="2024-06-06 11:32:00"
-        )
-        response = save_order_info(self.client, order_info, self.host, self.headers)
-        self.assertIsInstance(response, dict)
+def test_update_order():
+    client=requests.Session()
+    basic_auth_dto=DtoLoginUser(username='admin',
+                                password='222222', verificationCode="123")
+    token=users_login(client, basic_auth_dto, headers, BASE_URL)
+    client.headers.update({'Authorization': f'Bearer {token}'})
+    newOrder={
+        "accountId": "string",
+        "boughtDate": "string",
+        "coachNumber": 0,
+        "contactsDocumentNumber": "string",
+        "contactsName": "string",
+        "differenceMoney": "string",
+        "documentType": 0,
+        "from": "string",
+        "id": '053ba240-b71b-4ab8-97b2-2648dc6c9274',
+        "price": "string",
+        "seatClass": 0,
+        "seatNumber": "string",
+        "status": 0,
+        "to": "string",
+        "trainNumber": "string",
+        "travelDate": "string",
+        "travelTime": "string"
+    }
+    ret=update_order(client, newOrder, BASE_URL)
+    assert ret['msg']=='Admin Update Order Success'
 
-    def test_update_order(self):
-        order = Order(
-            id=str(fake.uuid4()),
-            from_="shanghai",
-            to="suzhou",
-            travelDate="2024-06-06 11:33:00"
-        )
-        response = update_order(self.client, order, self.host, self.headers)
-        self.assertIsInstance(response, dict)
 
-    def test_delete_order(self):
-        order_id = str(fake.uuid4())
-        response = delete_order(self.client, order_id, self.host, self.headers)
-        self.assertIsInstance(response, dict)
+def test_pay_order():
+    client=requests.Session()
+    ret=pay_order(client, '053ba240-b71b-4ab8-97b2-2648dc6c9274', BASE_URL)
+    assert ret['msg']=='Pay Order Success.'
 
-    def test_find_all_order(self):
-        response = find_all_order(self.client, self.host, self.headers)
-        self.assertIsInstance(response, dict)
 
-    def test_end_to_end(self):
-        # Create a new order
-        order = Order(
-            id=str(fake.uuid4()),
-            from_="shanghai",
-            to="suzhou",
-            travelDate="2024-06-06 11:33:00"
-        )
-        create_response = create_new_order(self.client, order, self.host, self.headers)
-        self.assertIsInstance(create_response, dict)
+def test_get_order_price():
+    client=requests.Session()
+    ret=get_order_price(client, '053ba240-b71b-4ab8-97b2-2648dc6c9274', BASE_URL)
+    assert ret['msg']=='Success'
 
-        # Get the order by ID
-        order_id = "2b21d5cc-329b-4e01-8f78-e44bf21e9388"
-        get_response = get_order_by_id(self.client, order_id, self.host, self.headers)
-        self.assertIsInstance(get_response, dict)
 
-        # Update the order
-        updated_order = Order(
-            id=str(fake.uuid4()),
-            from_="shanghai",
-            to="suzhou",
-            travelDate="2024-06-06 11:33:00"
-        )
-        update_response = update_order(self.client, updated_order, self.host, self.headers)
-        self.assertIsInstance(update_response, dict)
+def test_query_orders():
+    client=requests.Session()
+    qi={
+        "boughtDateEnd": "2020-11-12",
+        "boughtDateStart": "2020-11-10",
+        "enableBoughtDateQuery": True,
+        "enableStateQuery": True,
+        "enableTravelDateQuery": True,
+        "loginId": '3ef1a6da-faa9-4591-8546-386c0925b6a9',
+        "state": 1,
+        "travelDateEnd": "2020-11-18",
+        "travelDateStart": "2020-11-15"
+    }
+    ret=query_orders(client, qi, BASE_URL)
+    assert ret['msg']=='Get order num'
 
-        # Query the updated order
-        qi = OrderInfo(loginId=str(fake.uuid4()),
-                       travelDateStart="2024-06-05 19:26:00",
-                       travelDateEnd="2024-06-05 19:236:00",
-                       boughtDateStart="2024-06-05 19:46:00",
-                       boughtDateEnd="2024-06-06 19:26:00",
-                       state=1,
-                       enableTravelDateQuery=True,
-                       enableBoughtDateQuery=True,
-                       enableStateQuery=True)
-        query_response = query_orders(self.client, qi, self.host, self.headers)
-        self.assertEquals(query_response['status'], 1)
 
-        # Delete the order
-        delete_response = delete_order(self.client, order_id, self.host, self.headers)
-        self.assertIsInstance(delete_response, dict)
+def test_query_order_for_refresh():
+    client=requests.Session()
+    qi={
+        "boughtDateEnd": "2020-11-12",
+        "boughtDateStart": "2020-11-10",
+        "enableBoughtDateQuery": True,
+        "enableStateQuery": True,
+        "enableTravelDateQuery": True,
+        "loginId": '3ef1a6da-faa9-4591-8546-386c0925b6a9',
+        "state": 1,
+        "travelDateEnd": "2020-11-18",
+        "travelDateStart": "2020-11-15"
+    }
+    ret=query_order_for_refresh(client, qi, BASE_URL)
+    assert ret['msg']=='Query Orders For Refresh Success'
 
-    if __name__ == '__main__':
-        unittest.main()
+
+def test_security_info_check():
+    client=requests.Session()
+    checkDate='string'
+    accountId='string'
+    ret=security_info_check(client, checkDate, accountId, BASE_URL)
+    assert ret['msg']=='Check Security Success . '
+
+
+def test_modify_order():
+    client=requests.Session()
+    orderId='053ba240-b71b-4ab8-97b2-2648dc6c9274'
+    status=1
+    ret=modify_order(client, orderId, status, BASE_URL)
+    print(ret)
+
+
+def test_get_ticket_list_by_date_and_tripId():
+    client=requests.Session()
+    seat={
+        "destStation": "shanghai",
+        "seatType": 0,
+        "startStation": "suzhou",
+        "stations": [
+            "string"
+        ],
+        "totalNum": 0,
+        "trainNumber": "G123",
+        "travelDate": "2020-12-14"
+    }
+    ret=get_ticket_list_by_date_and_tripId(client, seat, BASE_URL)
+    print(ret)
+
+
+def test_delete_order():
+    client=requests.Session()
+    orderId='6a5022b7-8109-400f-91aa-7d08fbb65a7d'
+    ret=delete_order(client, orderId, BASE_URL)
+    assert ret['msg']=='Delete Order Success'
+
+
+def test_get_order_by_id():
+    client=requests.Session()
+    orderId='053ba240-b71b-4ab8-97b2-2648dc6c9274'
+    ret=get_order_by_id(client, orderId, BASE_URL)
+    assert ret['msg']=='Success.'
+
+
+def test_calculate_sold_ticket():
+    client=requests.Session()
+    travelDate='string'
+    trainNumber='string'
+    ret=calculate_sold_ticket(client, travelDate, trainNumber, BASE_URL)
+    assert ret['msg']=='Success'
+
+
+def test_home():
+    client=requests.Session()
+    basic_auth_dto=DtoLoginUser(username='admin',
+                                password='222222', verificationCode="123")
+    token=users_login(client, basic_auth_dto, headers, BASE_URL)
+    client.headers.update({'Authorization': f'Bearer {token}'})
+    ret=home(client, BASE_URL)
+    assert ret=='Welcome to [ Order Service ] !'
